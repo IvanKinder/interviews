@@ -1,16 +1,14 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import time
+import datetime
 import re
+import csv
 
 url = 'https://afipochtovaya.ru/plans/search'
-print(time.localtime())
 driver = webdriver.Chrome()
-
 driver.get(url)
 
 soup = BeautifulSoup(driver.page_source, 'lxml')
-print(soup.title)
 
 data = []
 data1 = []
@@ -40,5 +38,15 @@ for j in finally_data:
         j.pop(-1)
     else:
         j.append(j[-1])
-    j.append(float(j[6])/float(j[5]))
-    print(j)
+    j.append(int(float(j[6]) / float(j[5])))
+    j.append(int(float(j[7]) / float(j[5])))
+
+finally_data.insert(0, [soup.title.text])
+finally_data.insert(0, [str(datetime.datetime.today())])
+with open('1.csv', "w", newline='') as csv_file:
+    writer = csv.writer(csv_file, delimiter=';')
+    for line in finally_data:
+        writer.writerow(line)
+
+for l in finally_data:
+    print(l)
