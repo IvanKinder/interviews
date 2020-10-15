@@ -1,7 +1,8 @@
 import time
 import random
 
-rand_list = [random.randint(0, 100) for i in range(1000)]
+rand_list = [random.randint(0, 100) for i in range(10000)]
+little_list = [1, 9 ,2, 3, 1, 1, 1, 6, 3, 0]
 
 def multidel(my_list):  # сложность n^2
     new_list = []
@@ -10,15 +11,11 @@ def multidel(my_list):  # сложность n^2
             new_list.append(el)
     return new_list
 
-def multidel_v2(my_list):
-    i = 0
-    while True:
-        if my_list[i] not in my_list[0:i]:
-            print(i)
-        else:
-            break
-
-    return my_list
+def multidel_v2(my_list):  # сложность n
+    my_dict = {}
+    for el in my_list:
+        my_dict[el] = 0
+    return list(my_dict.keys())
 
 t1 = time.time()
 print(multidel(rand_list))
