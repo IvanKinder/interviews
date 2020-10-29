@@ -1,9 +1,9 @@
 import asyncio
 import websockets
 
-LOGINS = {}
+LOGINS = {'q': 'q', 'w': 'w'}
 USERS = set()
-TMP = {}
+TMP = {'q': 'q', 'w': 'w'}
 
 async def addUser(websocket):
     USERS.add(websocket)
@@ -18,9 +18,7 @@ async def socket(websocket, path):
         while True:
             message = await websocket.recv()
             message = list(message.split())
-            TMP[message[1]] = websocket
             print(message)
-            print(TMP)
             if 'reg_user_new' in message[0]:
                 message.pop(0)
                 if len(message) == 2:
@@ -40,7 +38,10 @@ async def socket(websocket, path):
             if 'message_from_user' in message[0]:
                 message.pop(0)
                 if len(message) == 2:
-                    await asyncio.wait([websocket.send(f'{message[0]}: {message[1]}')])
+                    TMP[message[0]] = websocket
+                    print(TMP)
+                    if message[0] in TMP.keys():
+                        await asyncio.wait([TMP[message[0]].send('все норм')])
                 if len(message) == 1:
                     await asyncio.wait([websocket.send('Ошибка!!! Нет такого получателя...')])
     except websockets.exceptions.ConnectionClosedOK:
