@@ -14,7 +14,12 @@ socket.onerror = function () {
 
 let p = "";
 socket.onmessage = function (e) {
-    p = document.createElement("p");
-    p.innerHTML = e.data;
-    document.querySelector(".message").appendChild(p);
+    if (e.data == "refresh") {
+        document.location.href = "index.html";
+    }
+    else {
+        p = document.createElement("p");
+        p.innerHTML = e.data;
+        document.querySelector(".message").appendChild(p);
+    }
 };
