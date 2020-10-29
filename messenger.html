@@ -5,12 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Веб-чат</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <ul class="header">
+        <li><a href="index.html">
+                <alt="main">Главная
+            </a></li>
+    </ul>
     <div class="message"></div>
-    <textarea placeholder="Для отправки нажмите Enter"></textarea>
-    <script src="ws.js"></script>
+    <form>
+        <fieldset>
+            <legend>Мессенджер</legend>
+            <p>Кому Вы хотите отправить сообщение: <input id="who" name="name" autofocus required></p>
+            <p><textarea placeholder="Для отправки нажмите Enter"></textarea></p>
+            <script src="mes.js"></script>
+        </fieldset>
+    </form>
 </body>
 
 </html>

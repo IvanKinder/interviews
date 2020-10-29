@@ -8,7 +8,7 @@ socket.onopen = function () {
             if (this.value.trim() === "") {
                 return false;
             }
-            socket.send(this.value.trim());
+            socket.send("message_from_user " + document.getElementById("who").value + " " + this.value.trim());
             this.value = "";
         }
     });
@@ -24,3 +24,4 @@ socket.onmessage = function (e) {
     p.innerHTML = e.data;
     document.querySelector(".message").appendChild(p);
 };
+
