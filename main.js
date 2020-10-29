@@ -14,12 +14,12 @@ socket.onerror = function () {
 
 let p = "";
 socket.onmessage = function (e) {
-    if (e.data != "y") {
+    if (e.data) {
+        document.location.href = "messenger.html";
+    }
+    else {
         p = document.createElement("p");
         p.innerHTML = e.data;
         document.querySelector(".message").appendChild(p);
-    }
-    else {
-        document.location.href = "messenger.html";
     }
 };

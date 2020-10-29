@@ -4,6 +4,8 @@ import websockets
 LOGINS = {'q': 'q', 'w': 'w'}
 USERS = set()
 TMP = {'q': 'q', 'w': 'w'}
+LogTmp_list = []
+LoginTMP_dict = {}
 
 async def addUser(websocket):
     USERS.add(websocket)
@@ -32,18 +34,27 @@ async def socket(websocket, path):
                 message.pop(0)
                 if len(message) == 2:
                     if LOGINS[message[0]] == message[1]:
-                        await asyncio.wait([websocket.send('y')])
+                        LogTmp_list.append(message[0])
+                        await asyncio.wait([websocket.send(message[0])])
                 else:
                     await asyncio.wait([websocket.send('Ошибка!')])
             if 'message_from_user' in message[0]:
+                if len(message) == 1:
+                    if LogTmp_list[-1] not in LoginTMP_dict.keys():
+                        LoginTMP_dict[LogTmp_list[-1]] = websocket
+                    if LogTmp_list[-1] in LoginTMP_dict.keys() and LoginTMP_dict[LogTmp_list[-1]] != websocket:
+                        LoginTMP_dict[LogTmp_list[-2]] = websocket
+                    for key, value in LoginTMP_dict.items():
+                        if websocket == value:
+                            await asyncio.wait([websocket.send(f'Вы вошли под логином: {key}')])
+                print(LogTmp_list)
                 message.pop(0)
                 if len(message) == 2:
-                    TMP[message[0]] = websocket
-                    print(TMP)
-                    if message[0] in TMP.keys():
-                        await asyncio.wait([TMP[message[0]].send('все норм')])
-                if len(message) == 1:
-                    await asyncio.wait([websocket.send('Ошибка!!! Нет такого получателя...')])
+                    print(LoginTMP_dict)
+                    if message[0] in LoginTMP_dict.keys():
+                        await asyncio.wait([LoginTMP_dict[message[0]].send(message[1])])
+                    else:
+                        await asyncio.wait([websocket.send('Ошибка! Нет такого получателя!!')])
     except websockets.exceptions.ConnectionClosedOK:
         print('Соединение закрыто...')
     finally:
