@@ -4,7 +4,7 @@ let socket = new WebSocket("ws://localhost:5678");
 
 socket.onopen = function () {
     document.getElementById("button").onclick = function () {
-        socket.send("login_user " + document.getElementById("login").value + " " + document.getElementById("pass").value);
+        socket.send("login_user;" + document.getElementById("login").value + ";" + document.getElementById("pass").value);
     };
 };
 

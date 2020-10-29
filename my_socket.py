@@ -19,7 +19,6 @@ async def reg(message, websocket):
             LOGINS[message[0]] = message[1]
             await asyncio.wait([websocket.send('Вы успешно зарегистрированы!')])
             await asyncio.wait([websocket.send('refresh')])
-        print(LOGINS)
     if len(message) < 2:
         await asyncio.wait([websocket.send('Ошибка!')])
 
@@ -34,14 +33,18 @@ async def mes(message, websocket):
         if LogTmp_list:
             LoginTMP_dict[LogTmp_list[-1]] = websocket
             await asyncio.wait([websocket.send(f'Вы вошли под логином: {LogTmp_list[-1]}')])
-            LogTmp_list.clear()
         else:
             await asyncio.wait([websocket.send('refresh')])
     if len(message) == 2:
         if message[0] in LoginTMP_dict.keys():
-            await asyncio.wait([LoginTMP_dict[message[0]].send(message[1])])
+            for key, value in LoginTMP_dict.items():
+                if websocket == value:
+                    await asyncio.wait([websocket.send(f'Вы отправили сообщение {message[0]}: {message[1]}')])
+                    await asyncio.wait([LoginTMP_dict[message[0]].send(f'{key} отправил Вам сообщение: {message[1]}')])
         else:
             await asyncio.wait([websocket.send('Ошибка! Нет такого получателя!!')])
+    print(LogTmp_list)
+    LogTmp_list.clear()
 
 async def socket(websocket, path):
     await addUser(websocket)
@@ -49,7 +52,7 @@ async def socket(websocket, path):
     try:
         while True:
             message = await websocket.recv()
-            message = list(message.split())
+            message = list(message.split(';'))
             if 'reg_user_new' in message[0]:
                 message.pop(0)
                 await reg(message, websocket)

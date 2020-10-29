@@ -10,7 +10,7 @@ socket.onopen = function () {
             if (this.value.trim() === "") {
                 return false;
             }
-            socket.send("message_from_user " + document.getElementById("who").value + " " + this.value.trim());
+            socket.send("message_from_user;" + document.getElementById("who").value + ";" + this.value.trim());
             this.value = "";
         }
     });
