@@ -1,6 +1,6 @@
 "use strict";
 
-let socket = new WebSocket("ws://localhost:5678");
+let socket = new WebSocket("ws://127.0.0.1:5678");
 let flag = new Date();
 
 socket.onopen = function () {
@@ -21,6 +21,8 @@ socket.onerror = function () {
 };
 
 let p = "";
+let signal = new Audio();
+signal.src = "signal.mp3";
 socket.onmessage = function (e) {
     if (e.data == "refresh") {
         document.location.href = "index.html";
@@ -29,6 +31,7 @@ socket.onmessage = function (e) {
         p = document.createElement("p");
         p.innerHTML = e.data;
         document.querySelector(".message").appendChild(p);
+        signal.play();
     }
 };
 

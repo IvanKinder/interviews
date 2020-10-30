@@ -1,8 +1,9 @@
 "use strict";
 
-let socket = new WebSocket("ws://localhost:5678");
+let socket = new WebSocket("ws://127.0.0.1:5678");
 
 socket.onopen = function () {
+    socket.send("reg_user_new");
     document.getElementById("button").onclick = function () {
         socket.send("reg_user_new;" + document.getElementById("login").value + ";" + document.getElementById("pass").value);
     };
@@ -13,6 +14,7 @@ socket.onerror = function () {
 };
 
 let p = "";
+
 socket.onmessage = function (e) {
     if (e.data == "refresh") {
         document.location.href = "index.html";

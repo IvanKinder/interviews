@@ -1,8 +1,9 @@
 "use strict";
 
-let socket = new WebSocket("ws://localhost:5678");
+let socket = new WebSocket("ws://127.0.0.1:5678");
 
 socket.onopen = function () {
+    socket.send("login_user");
     document.getElementById("button").onclick = function () {
         socket.send("login_user;" + document.getElementById("login").value + ";" + document.getElementById("pass").value);
     };
