@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from mainapp.models import Question, Poll
+
+admin.site.register(Question)
+admin.site.register(Poll)

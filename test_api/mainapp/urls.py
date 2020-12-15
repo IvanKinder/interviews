@@ -21,5 +21,8 @@ from mainapp.views import *
 app_name = 'Вопрос'
 urlpatterns = [
     path('question/create/', QuestionCreateView.as_view()),
+    path('questions/', QuestionListView.as_view()),
+    path('questions/detail/<int:pk>/', QuestionDetailView.as_view()),
     path('poll/create/', PollCreateView.as_view()),
+    path('polls', PollListView.as_view()),
 ]
