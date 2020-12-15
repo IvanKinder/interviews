@@ -1,1 +1,7 @@
-Репозиторий для заданий с собеседований
+python3 manage.py runserver - запуск на локальной машине
+http://127.0.0.1:8000/api/v1/mainapp/question/create/    - создание нового вопроса
+http://127.0.0.1:8000/api/v1/mainapp/poll/create/        - создание нового опроса
+http://127.0.0.1:8000/api/v1/mainapp/question/           - список всех вопросов
+http://127.0.0.1:8000/api/v1/mainapp/poll/               - список всех опросов
+http://127.0.0.1:8000/api/v1/mainapp/question/detail/n/  - редактирование или удаление конкретного вопроса (n - первичный ключ вопроса int)
+http://127.0.0.1:8000/admin/                             - админка
