@@ -9,7 +9,7 @@ class QuestionDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class QuestionsListSerializer(serializers.ModelSerializer):
+class QuestionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ('id', 'question', 'poll', 'question_type')
@@ -21,7 +21,9 @@ class PollDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PollsListSerializer(serializers.ModelSerializer):
+class PollListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = ('name', 'is_active')
+
+

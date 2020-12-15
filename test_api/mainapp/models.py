@@ -26,14 +26,3 @@ class Question(models.Model):
 
     def __str__(self):
         return f'{self.question}; из опроса "{self.poll.name}"'
-
-
-class PollUser(AbstractUser):
-    def __str__(self):
-        return self.username
-
-
-class Answer(models.Model):
-    user = models.ForeignKey(PollUser, on_delete=models.CASCADE, verbose_name='Пользователь', default=None)
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='Опрос', default=None)
-    
