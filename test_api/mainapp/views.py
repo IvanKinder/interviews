@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from rest_framework import generics
-from mainapp.permissions import IsAdmin
 
 from mainapp.models import Question, Poll
-from mainapp.serializers import QuestionDetailSerializer, PollDetailSerializer, QuestionListSerializer, PollListSerializer
+from mainapp.serializers import QuestionDetailSerializer, PollDetailSerializer, QuestionListSerializer, \
+    PollListSerializer, UserPollListSerializer
 
 
 class QuestionCreateView(generics.CreateAPIView):
@@ -32,6 +33,7 @@ class QuestionListView(generics.ListAPIView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+
 class PollListView(generics.ListAPIView):
     serializer_class = PollListSerializer
     queryset = Poll.objects.all()
@@ -40,10 +42,20 @@ class PollListView(generics.ListAPIView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+
 class QuestionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = QuestionDetailSerializer
     queryset = Question.objects.all()
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class UserPollListView(generics.ListAPIView):
+    serializer_class = UserPollListSerializer
+    queryset = User.objects.all()
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)

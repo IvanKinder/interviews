@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from mainapp.models import Question, Poll
@@ -26,4 +27,9 @@ class PollListSerializer(serializers.ModelSerializer):
         model = Poll
         fields = ('name', 'is_active')
 
+
+class UserPollListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
