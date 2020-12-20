@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from rest_framework import generics
 
-from mainapp.models import Poll, Question
+from mainapp.models import Poll, Question, Answer
 from mainapp.serializers import PollDetailSerializer, QuestionDetailSerializer, PollListSerializer, \
     AnswerDetailSerializer, QuestionListSerializer
 
@@ -58,16 +59,16 @@ class PollListView(generics.ListAPIView):
 
 class QuestionListView(generics.ListAPIView):
     serializer_class = QuestionListSerializer
-    queryset = Question.objects.all()
+    # queryset = Question.objects.all()
 
     def get_queryset(self):
         poll_pk = self.kwargs['pk']
         self.queryset = Question.objects.filter(poll=poll_pk)
         return self.queryset
 
+
     def get_view_name(self):
         TMP_LIST.append(self.__dict__)
-        print(TMP_LIST)
         if len(TMP_LIST) == 1:
             pk = TMP_LIST[0]
             view_name = Poll.objects.filter(pk=pk["kwargs"]["pk"])[0]
@@ -89,6 +90,20 @@ class QuestionListView(generics.ListAPIView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+
+class AnswerDetailView(generics.CreateAPIView):
+    serializer_class = AnswerDetailSerializer
+    # queryset = Answer.objects.all()
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        print(self.request.__dict__['resolver_match'][2]['pk'])
+        return super().dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        poll_pk = self.kwargs['pk']
+        self.queryset = Question.objects.filter(poll=poll_pk)
+        return self.queryset
 
 # class AnswerCreateView(generics.CreateAPIView):
 #     serializer_class = AnswerDetailSerializer

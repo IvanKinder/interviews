@@ -28,8 +28,10 @@ class PollListSerializer(serializers.ModelSerializer):
 
 
 class AnswerDetailSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Answer
-        fields = ('question', 'answer',)
+        fields = '__all__'
 
 

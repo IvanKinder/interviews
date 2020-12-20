@@ -29,10 +29,10 @@ class Question(models.Model):
     is_active = models.BooleanField(verbose_name='Активен', default=True)
 
     def __str__(self):
-        return f'{self.question}; из опроса "{self.poll.name}"'
+        return f'Вопрос: {self.question} из опроса "{self.poll.name}"'
 
 
 class Answer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', unique=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос', default=None)
     answer = models.TextField(verbose_name='Ответ', default=None)
