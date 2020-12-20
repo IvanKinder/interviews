@@ -33,6 +33,9 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос', default=None)
     answer = models.TextField(verbose_name='Ответ', default=None)
+
+    class Meta:
+        unique_together = ('user', 'question')

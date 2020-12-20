@@ -6,8 +6,7 @@ from rest_framework import generics
 
 from mainapp.models import Poll, Question, Answer
 from mainapp.serializers import PollDetailSerializer, QuestionDetailSerializer, PollListSerializer, \
-    AnswerDetailSerializer, QuestionListSerializer
-
+    AnswerDetailSerializer, QuestionListSerializer, AnswerListSerializer, AnsweredPollsListSerializer
 
 # def pollview(request, pk):
 #     print(Poll.question_list(pk))
@@ -59,13 +58,13 @@ class PollListView(generics.ListAPIView):
 
 class QuestionListView(generics.ListAPIView):
     serializer_class = QuestionListSerializer
+
     # queryset = Question.objects.all()
 
     def get_queryset(self):
         poll_pk = self.kwargs['pk']
         self.queryset = Question.objects.filter(poll=poll_pk)
         return self.queryset
-
 
     def get_view_name(self):
         TMP_LIST.append(self.__dict__)
@@ -85,7 +84,6 @@ class QuestionListView(generics.ListAPIView):
                 TMP_LIST.clear()
                 return view_name
 
-
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
@@ -93,11 +91,12 @@ class QuestionListView(generics.ListAPIView):
 
 class AnswerDetailView(generics.CreateAPIView):
     serializer_class = AnswerDetailSerializer
+
     # queryset = Answer.objects.all()
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
-        print(self.request.__dict__['resolver_match'][2]['pk'])
+        # print(self.request.__dict__['resolver_match'][2]['pk'])
         return super().dispatch(*args, **kwargs)
 
     # def get_queryset(self):
@@ -105,5 +104,30 @@ class AnswerDetailView(generics.CreateAPIView):
     #     self.queryset = Question.objects.filter(poll=poll_pk)
     #     return self.queryset
 
-# class AnswerCreateView(generics.CreateAPIView):
-#     serializer_class = AnswerDetailSerializer
+
+class AnswerListView(generics.ListAPIView):
+    serializer_class = AnswerListSerializer
+    queryset = Answer.objects.select_related('question')
+
+    def get_queryset(self):
+        self.queryset = Answer.objects.select_related('question').filter(user=self.request.user)
+        return self.queryset
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class AnsweredPollsListView(generics.ListAPIView):
+    serializer_class = AnsweredPollsListSerializer
+    queryset = Poll.objects.all()
+
+    def get_queryset(self):
+        self.queryset = Poll.objects.all()
+        print(self.request.user)
+        print()
+        return self.queryset
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

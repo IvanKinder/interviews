@@ -35,3 +35,13 @@ class AnswerDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AnswerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = '__all__'
+
+
+class AnsweredPollsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poll
+        fields = '__all__'
