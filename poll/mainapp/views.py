@@ -100,10 +100,10 @@ class AnswerDetailView(generics.CreateAPIView):
         print(self.request.__dict__['resolver_match'][2]['pk'])
         return super().dispatch(*args, **kwargs)
 
-    def get_queryset(self):
-        poll_pk = self.kwargs['pk']
-        self.queryset = Question.objects.filter(poll=poll_pk)
-        return self.queryset
+    # def get_queryset(self):
+    #     poll_pk = self.kwargs['pk']
+    #     self.queryset = Question.objects.filter(poll=poll_pk)
+    #     return self.queryset
 
 # class AnswerCreateView(generics.CreateAPIView):
 #     serializer_class = AnswerDetailSerializer
