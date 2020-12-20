@@ -124,8 +124,11 @@ class AnsweredPollsListView(generics.ListAPIView):
 
     def get_queryset(self):
         self.queryset = Poll.objects.all()
-        print(self.request.user)
-        print()
+        TMP = []
+        for poll in Poll.objects.all():
+            if Answer.objects.filter(user=self.request.user)[0].question.poll == poll:
+                TMP.append(poll)
+        self.queryset = TMP
         return self.queryset
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
