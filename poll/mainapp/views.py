@@ -10,6 +10,7 @@ from mainapp.serializers import PollDetailSerializer, QuestionDetailSerializer, 
 
 # def pollview(request, pk):
 #     print(Poll.question_list(pk))
+TMP_LIST = []
 
 
 class PollCreateView(generics.CreateAPIView):
@@ -60,16 +61,34 @@ class QuestionListView(generics.ListAPIView):
     queryset = Question.objects.all()
 
     def get_queryset(self):
-        request = self.request
-        poll_pk = str(request)[-4]
-        # poll = request.query_params.get('poll')
-        # self.queryset = Question.objects.filter(poll_id=request.)
+        poll_pk = self.kwargs['pk']
         self.queryset = Question.objects.filter(poll=poll_pk)
         return self.queryset
+
+    def get_view_name(self):
+        TMP_LIST.append(self.__dict__)
+        print(TMP_LIST)
+        if len(TMP_LIST) == 1:
+            pk = TMP_LIST[0]
+            view_name = Poll.objects.filter(pk=pk["kwargs"]["pk"])[0]
+            return view_name
+        if len(TMP_LIST) > 1:
+            pk = TMP_LIST[-2]
+            try:
+                view_name = Poll.objects.filter(pk=pk["kwargs"]["pk"])[0]
+                TMP_LIST.clear()
+                return view_name
+            except:
+                pk = TMP_LIST[-1]
+                view_name = Poll.objects.filter(pk=pk["kwargs"]["pk"])[0]
+                TMP_LIST.clear()
+                return view_name
 
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+
 # class AnswerCreateView(generics.CreateAPIView):
 #     serializer_class = AnswerDetailSerializer
