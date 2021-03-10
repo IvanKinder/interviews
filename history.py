@@ -5,14 +5,16 @@ import sys
 
 class History:
 
-    def __init__(self, history_arr: list, score: float):
-        self.history_arr = history_arr
-        self.score = score
+    def __init__(self):
+        self.history_arr = []
+        self.score = 1
         self.iterator = 0
+        self.dubles = 0
 
     def set_history(self, sequence: list, score: float):
         self.iterator = 0
         if self.is_it_dupe_sequence(sequence):
+            self.dubles += self.iterator
             if score < self.score:
                 self.score = score
             return self.iterator
@@ -33,13 +35,13 @@ class History:
             return False
 
     def save_history(self, filepath: str):
-        curdir = sys.path[0]
+        my_dir = sys.path[0]
         if filepath:
             os.chdir(filepath)
         data = {'history_arr': self.history_arr, 'score': self.score}
         with open(f'history.json', 'w', encoding='utf-8') as file:
             json.dump(data, file)
-        os.chdir(curdir)
+        os.chdir(my_dir)
 
     @staticmethod
     def load_history(filepath: str):
