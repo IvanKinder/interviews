@@ -32,13 +32,15 @@ class History:
             return False
 
     def save_history(self, filepath: str):
-        os.chdir(filepath)
+        if filepath:
+            os.chdir(filepath)
         data = {'history_arr': self.history_arr, 'score': self.score}
         with open(f'history.json', 'w', encoding='utf-8') as file:
             json.dump(data, file)
 
     @staticmethod
     def load_history(filepath: str):
-        os.chdir(filepath)
-        with open(f'history.json', 'w', encoding='utf-8') as file:
+        if filepath:
+            os.chdir(filepath)
+        with open(f'history.json', 'r', encoding='utf-8') as file:
             return json.load(file)
