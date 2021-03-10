@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 
 class History:
@@ -32,11 +33,13 @@ class History:
             return False
 
     def save_history(self, filepath: str):
+        curdir = sys.path[0]
         if filepath:
             os.chdir(filepath)
         data = {'history_arr': self.history_arr, 'score': self.score}
         with open(f'history.json', 'w', encoding='utf-8') as file:
             json.dump(data, file)
+        os.chdir(curdir)
 
     @staticmethod
     def load_history(filepath: str):
