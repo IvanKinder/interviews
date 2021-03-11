@@ -48,4 +48,8 @@ class History:
         if filepath:
             os.chdir(filepath)
         with open(f'history.json', 'r', encoding='utf-8') as file:
-            return json.load(file)
+            hist_obj = History()
+            data = json.load(file)
+            hist_obj.history_arr = data['history_arr']
+            hist_obj.score = data['score']
+            return hist_obj
