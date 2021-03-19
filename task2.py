@@ -11,13 +11,14 @@ driver.get("https://ru.wikipedia.org/wiki/Категория:Животные_п
 
 
 i = 0
-while True:
+flag = True
+while flag:
     try:
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         html_animals_list = soup.findAll('li')
         for tag in html_animals_list[2:202]:
-            if ord(tag.text[0].lower()) > ord('я'):
-                break
+            if ord(tag.text[0].lower()) >= ord('я'):
+                flag = False
             ANIMALS_LIST.append(tag.text)
         driver.find_element_by_link_text('Следующая страница').click()
         i += 1
@@ -29,11 +30,11 @@ letter = ord('а')
 
 
 for animal in ANIMALS_LIST:
-    DICT_NUMS[animal[0]] = []
+    if 1072 <= ord(animal.lower()) <= 1103:
+        DICT_NUMS[animal[0]] = []
 
 for animal in ANIMALS_LIST:
     DICT_NUMS[animal[0]].append(animal)
-
 
 for key, value in DICT_NUMS.items():
     print(f'{key}: {len(value)}')
