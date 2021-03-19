@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from collections import OrderedDict
 
 
 ANIMALS_LIST = []
-DICT_NUMS = {}
+DICT_NUMS = OrderedDict()
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get("https://ru.wikipedia.org/wiki/Категория:Животные_по_алфавиту")
@@ -25,6 +26,8 @@ while flag:
     except:
         break
 
+driver.close()
+
 for animal in ANIMALS_LIST:
     if 1072 <= ord(animal[0].lower()) <= 1105:
         DICT_NUMS[animal[0]] = []
@@ -33,5 +36,15 @@ for animal in ANIMALS_LIST:
     if 1072 <= ord(animal[0].lower()) <= 1105:
         DICT_NUMS[animal[0]].append(animal)
 
-for key, value in DICT_NUMS.items():
-    print(f'{key}: {len(value)}')
+# for key, value in DICT_NUMS.items():
+#     print(f'{key}: {len(value)}')
+
+alphabet = [chr(i) for i in range(1072, 1104)]
+
+for letter in alphabet:
+    try:
+        if letter == 'ж' and ('Ё' in DICT_NUMS.keys()):
+            print(f'Ё: {len(DICT_NUMS["Ё"])}')
+        print(f'{letter.capitalize()}: {len(DICT_NUMS[letter.capitalize()])}')
+    except KeyError:
+        pass
