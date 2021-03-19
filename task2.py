@@ -18,6 +18,8 @@ while flag:
         html_animals_list = soup.findAll('li')
         for tag in html_animals_list[2:202]:
             if ord(tag.text[0].lower()) >= ord('я'):
+                continue
+            if tag.text[0] == 'A':
                 flag = False
             ANIMALS_LIST.append(tag.text)
         driver.find_element_by_link_text('Следующая страница').click()
@@ -30,7 +32,7 @@ letter = ord('а')
 
 
 for animal in ANIMALS_LIST:
-    if 1072 <= ord(animal.lower()) <= 1103:
+    if 1072 <= ord(animal[0].lower()) <= 1103:
         DICT_NUMS[animal[0]] = []
 
 for animal in ANIMALS_LIST:
