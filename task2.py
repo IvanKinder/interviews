@@ -36,9 +36,6 @@ for animal in ANIMALS_LIST:
     if 1072 <= ord(animal[0].lower()) <= 1105:
         DICT_NUMS[animal[0]].append(animal)
 
-# for key, value in DICT_NUMS.items():
-#     print(f'{key}: {len(value)}')
-
 alphabet = [chr(i) for i in range(1072, 1104)]
 
 for letter in alphabet:
