@@ -1,11 +1,10 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from collections import OrderedDict
 
 
 ANIMALS_LIST = []
-DICT_NUMS = OrderedDict()
+DICT_NUMS = {}
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get("https://ru.wikipedia.org/wiki/Категория:Животные_по_алфавиту")
