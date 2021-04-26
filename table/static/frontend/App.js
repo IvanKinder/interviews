@@ -22,6 +22,7 @@ Ext.onReady(function () {
             },
             writer: {
                 type: 'json',
+                rootProperty: 'data'
             }
         }
     });
@@ -35,6 +36,31 @@ Ext.onReady(function () {
             save_flag = true
         } catch (e) {
             console.log(e)
+        }
+    };
+
+    var put_handler = function () {
+        var tmp = store.getUpdatedRecords()[0]
+        if (tmp){
+            tmp = tmp.data
+            Ext.Ajax.request({
+                url: tmp.url,
+                jsonData: tmp,
+                method: 'PUT',
+                success: function (response, opts) {
+                    Ext.Msg.alert('INFO', 'Книга обновлена')
+                    console.dir(response.status);
+                    store.reload()
+                },
+                failure: function (response, opts) {
+                    Ext.Msg.alert('ERROR', 'Ошибка!')
+                    console.dir(response.status);
+                    store.reload()
+                }
+            })
+        }
+        else {
+            Ext.Msg.alert('INFO', 'Нечего сохранять!')
         }
     };
 
@@ -129,7 +155,8 @@ Ext.onReady(function () {
                         })
                         save_flag = false
                     } else {
-                        Ext.Msg.alert('INFO', 'Nothing to save!')
+                        // Ext.Msg.alert('INFO', 'Nothing to save!')
+                        put_handler()
                     }
                 }
             },
