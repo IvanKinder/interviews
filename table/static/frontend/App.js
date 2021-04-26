@@ -22,7 +22,6 @@ Ext.onReady(function () {
             },
             writer: {
                 type: 'json',
-                // rootProperty: 'data'
             }
         }
     });
@@ -32,60 +31,55 @@ Ext.onReady(function () {
     var post_handler = function () {
         store.insert(0, new Book());
         Editing.startEdit(0, 0);
-        // button = document.getElementById("button-1038-btnInnerEl")
-        table_el = document.getElementById('tableview-1025').children[1].firstChild
-        var new_book = []
-        for (let i = 0; i < 5; i++) {
-            new_book.push(table_el.querySelectorAll('td')[i].firstChild.childNodes[0].data)
+        try {
+            save_flag = true
+        } catch (e) {
+            console.log(e)
         }
-        var new_book_obj = {
-            "name": new_book[0],
-            "author": new_book[1],
-            "year": new_book[2],
-            "in_stock": new_book[3],
-            "price": new_book[4],
-        }
-        console.log(new_book_obj)
-        Ext.Ajax.request({
-            url: 'http://127.0.0.1:8000/books/',
-            jsonData: new_book_obj
-        })
-        save_flag = true
     };
 
     var grid = Ext.create('Ext.grid.Panel', {
         title: 'Books',
         plugins: [Editing],
-        height: 900,
-        width: 600,
+        height: 960,
         store: store,
         columns: [{
             header: 'name',
             dataIndex: 'name',
+            flex: 1,
+            width: 150,
             field: {
                 xtype: 'textfield'
             }
         }, {
             header: 'author',
             dataIndex: 'author',
+            flex: 1,
+            width: 150,
             field: {
                 xtype: 'textfield'
             }
         }, {
             header: 'year',
             dataIndex: 'year',
+            flex: 1,
+            width: 150,
             field: {
                 xtype: 'numberfield'
             }
         }, {
             header: 'in_stock',
             dataIndex: 'in_stock',
+            flex: 1,
+            width: 150,
             field: {
                 xtype: 'checkbox'
             }
         }, {
             header: 'price',
             dataIndex: 'price',
+            flex: 1,
+            width: 150,
             field: {
                 xtype: 'numberfield'
             }
@@ -107,7 +101,6 @@ Ext.onReady(function () {
                 text: 'Save',
                 handler: function () {
                     if (save_flag === true) {
-                        // button = document.getElementById("button-1033-btnInnerEl")
                         table_el = document.getElementById('tableview-1025').children[1].firstChild
                         var new_book = []
                         for (let i = 0; i < 5; i++) {
@@ -120,10 +113,19 @@ Ext.onReady(function () {
                             "in_stock": new_book[3],
                             "price": new_book[4],
                         }
-                        console.log(new_book_obj)
                         Ext.Ajax.request({
                             url: 'http://127.0.0.1:8000/books/',
-                            jsonData: new_book_obj
+                            jsonData: new_book_obj,
+                            success: function (response, opts) {
+                                Ext.Msg.alert('INFO', 'Новая книга сохранена')
+                                console.dir(response.status);
+                                store.reload()
+                            },
+                            failure: function (response, opts) {
+                                Ext.Msg.alert('ERROR', 'Все поля должны быть заполнены!')
+                                console.dir(response.status);
+                                store.reload()
+                            }
                         })
                         save_flag = false
                     } else {
