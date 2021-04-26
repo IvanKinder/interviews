@@ -20,4 +20,6 @@ class BookViewSet(ModelViewSet):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):
             queryset = queryset.all()
+        if self.request.method == 'DELETE':
+            return queryset
         return queryset[::-1]
