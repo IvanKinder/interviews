@@ -144,7 +144,8 @@ Ext.onReady(function () {
                             method: 'DELETE',
                         })
                             .then(res => res.text())
-                            .then(res => console.log(res))
+                            .then(res => console.log(res));
+                        store.reload()
                     }
                 }
             },
