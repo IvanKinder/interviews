@@ -15,13 +15,7 @@ Ext.onReady(function () {
         autoLoad: true,
         proxy: {
             type: 'rest',
-            // url: 'http://127.0.0.1:8000/books/',
-            api: {
-                read: 'http://127.0.0.1:8000/books/',
-                write: 'http://127.0.0.1:8000/books/',
-                update: 'http://127.0.0.1:8000/books/',
-                destroy: 'http://127.0.0.1:8000/books/',
-            },
+            url: 'http://127.0.0.1:8000/books/',
             reader: {
                 type: 'json',
                 rootProperty: 'data'
@@ -34,33 +28,30 @@ Ext.onReady(function () {
     });
 
     var Editing = Ext.create('Ext.grid.plugin.RowEditing');
-
+    var save_flag = false
     var post_handler = function () {
         store.insert(0, new Book());
         Editing.startEdit(0, 0);
-        button = document.getElementById("button-1038-btnInnerEl")
-        button.onclick = function () {
-            table_el = document.getElementById('tableview-1025').children[1].firstChild
-            var new_book = []
-            for (let i = 0; i < 5; i++) {
-                new_book.push(table_el.querySelectorAll('td')[i].firstChild.childNodes[0].data)
-            }
-            var new_book_obj = {
-                "name": new_book[0],
-                "author": new_book[1],
-                "year": new_book[2],
-                "in_stock": new_book[3],
-                "price": new_book[4],
-            }
-            console.log(new_book_obj)
-            Ext.Ajax.request({
-                url: 'http://127.0.0.1:8000/books/',
-                success: console.log('success'),
-                failure: console.log('fail'),
-                jsonData: new_book_obj
-            })
-        };
-    }
+        // button = document.getElementById("button-1038-btnInnerEl")
+        table_el = document.getElementById('tableview-1025').children[1].firstChild
+        var new_book = []
+        for (let i = 0; i < 5; i++) {
+            new_book.push(table_el.querySelectorAll('td')[i].firstChild.childNodes[0].data)
+        }
+        var new_book_obj = {
+            "name": new_book[0],
+            "author": new_book[1],
+            "year": new_book[2],
+            "in_stock": new_book[3],
+            "price": new_book[4],
+        }
+        console.log(new_book_obj)
+        Ext.Ajax.request({
+            url: 'http://127.0.0.1:8000/books/',
+            jsonData: new_book_obj
+        })
+        save_flag = true
+    };
 
     var grid = Ext.create('Ext.grid.Panel', {
         title: 'Books',
@@ -115,7 +106,29 @@ Ext.onReady(function () {
                 itemId: 'save',
                 text: 'Save',
                 handler: function () {
-                    console.log('popo')
+                    if (save_flag === true) {
+                        // button = document.getElementById("button-1033-btnInnerEl")
+                        table_el = document.getElementById('tableview-1025').children[1].firstChild
+                        var new_book = []
+                        for (let i = 0; i < 5; i++) {
+                            new_book.push(table_el.querySelectorAll('td')[i].firstChild.childNodes[0].data)
+                        }
+                        var new_book_obj = {
+                            "name": new_book[0],
+                            "author": new_book[1],
+                            "year": new_book[2],
+                            "in_stock": new_book[3],
+                            "price": new_book[4],
+                        }
+                        console.log(new_book_obj)
+                        Ext.Ajax.request({
+                            url: 'http://127.0.0.1:8000/books/',
+                            jsonData: new_book_obj
+                        })
+                        save_flag = false
+                    } else {
+                        Ext.Msg.alert('INFO', 'Nothing to save!')
+                    }
                 }
             },
             {
