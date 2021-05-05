@@ -1,12 +1,14 @@
 from django.contrib import admin
 from django.urls import path
 
-from authapp.views import register
+from authapp.views import register, login, logout, UserUpdateView
 
 app_name = 'authapp'
 
 
 urlpatterns = [
-    # path('login/', LoginView.as_view()),
+    path('login/', login, name='login'),
     path('register/', register, name='register'),
+    path('logout/', logout, name='logout'),
+    path('<int:pk>/', UserUpdateView.as_view(), name='update_user'),
 ]

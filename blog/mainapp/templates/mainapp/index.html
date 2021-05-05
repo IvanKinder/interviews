@@ -5,9 +5,15 @@
     <title>Главная</title>
 </head>
 <body>
-    <h1>Главная страница</h1>
-    <h2>Коллективный блог</h2>
+<h1>Главная страница</h1>
+<h2>Коллективный блог</h2>
+{% if user.is_authenticated %}
+    <h3>Здравствуйте, {{ user }}!</h3>
+    <a href="{% url 'authapp:logout' %}">выйти</a>
+{#    <a href="{% url 'authapp:logout' %}">Личный кабинет</a>#}
+{% else %}
     <a href="{% url 'authapp:login' %}">Войти</a>
     <a href="{% url 'authapp:register' %}">Зарегистрироваться</a>
+{% endif %}
 </body>
 </html>
