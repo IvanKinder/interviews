@@ -39,7 +39,7 @@ def login(request):
             auth.login(request, user)
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
-            return HttpResponseRedirect(reverse('mainapp:main'))
+            return HttpResponseRedirect(reverse('authapp:update_user', args=[request.user.pk]))
     content = {'login_form': login_form, 'next': next_url}
     return render(request, 'authapp/login.html', content)
 
