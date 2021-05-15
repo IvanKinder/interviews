@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Введите номер телефона</title>
+    <title>Введите код</title>
 </head>
 <body>
 <form class="form-horizontal" action="{% url 'tmp_code' %}" method="post">
     {% csrf_token %}
-    {{ login_form.as_p }}
+    <br>
+    <input type="text" placeholder="код">
+    <br>
     <br>
     <input class="form-control" type="submit" value="войти">
 </form>
