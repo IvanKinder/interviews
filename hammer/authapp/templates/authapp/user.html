@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя {{ user }}</title>
+</head>
+<body>
+<form class="form-horizontal" action="#" method="post">
+    {% csrf_token %}
+    {{ invite_code }}
+    {% if invite_code %}
+        <h2>Приглашен по коду: {{ invite_code }}</h2>
+    {% else %}
+        {{ form.as_p }}
+    {% endif %}
+    <br>
+    <input class="form-control" type="submit" value="ввести код">
+</form>
+</body>
+</html>

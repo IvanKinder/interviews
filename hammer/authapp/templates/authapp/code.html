@@ -11,5 +11,8 @@
     <br>
     <input class="form-control" type="submit" value="войти">
 </form>
+{% if tmp_code %}
+    <p>Код, который надо ввести: {{ tmp_code }}</p>
+{% endif %}
 </body>
 </html>

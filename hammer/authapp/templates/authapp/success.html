@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вы ввели код</title>
+</head>
+<body>
+{% csrf_token %}
+{% if data %}
+    <h1>Вы ввели правильный код!</h1>
+    <a href="{% url 'user' %}">Профиль пользователя</a>
+{% else %}
+    <h1>Код неверный!</h1>
+{% endif %}
+</body>
+</html>
