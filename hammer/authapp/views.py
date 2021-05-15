@@ -4,8 +4,11 @@ import string
 from django.contrib import auth
 from django.shortcuts import render
 
-from authapp.forms import ReferalUserLoginForm
+from authapp.forms import ReferalUserLoginForm, ReferalUserCodeForm
 from authapp.models import ReferalUser
+
+
+TMP_CODE = ''
 
 
 def generate_alphanum_random_string(length):
@@ -33,6 +36,10 @@ def login(request):
                                                code=generate_alphanum_random_string(6))
         if user and user.is_active:
             auth.login(request, user)
+
+        TMP_CODE = generate_alphanum_random_string(4)
+        print('--->', TMP_CODE)
+        print(user)
     content = {'login_form': login_form}
     return render(request, 'authapp/login.html', content)
 
@@ -40,11 +47,10 @@ def login(request):
 def tmp_code(request):
     """ представление для подтверждения кода """
 
-    # code_form = ReferalUserCodeForm(data=request.POST)
-    # print(request.__dict__)
+    code_form = ReferalUserCodeForm(data=request.POST)
     if request.method == 'POST':
-        tmp_code = request.POST.__dict__
-        print(tmp_code)
+        tmp_code = request.POST.get('code')
+        print('++++', tmp_code)
         # phone_number = request.POST.get('phone_number')
         # phones = set()
         # users = ReferalUser.objects.all()
@@ -54,5 +60,5 @@ def tmp_code(request):
         #                                        code=generate_alphanum_random_string(6))
         # if user and user.is_active:
         #     auth.login(request, user)
-    # content = {'code_form': code_form}
-    return render(request, 'authapp/code.html')
+    content = {'code_form': code_form}
+    return render(request, 'authapp/code.html', content)
