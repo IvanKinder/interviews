@@ -80,9 +80,13 @@ def user(request):
     user = ReferalUser.objects.get(username=request.user)
     codes = []
     message = 0
+    invited_users = []
     for u in ReferalUser.objects.all():
         codes.append(u.code)
-    content = {'form': invite_code_form, 'user': request.user, 'invite_code': user.invite_code, 'message': message}
+        if u.invite_code == user.code:
+            invited_users.append(u.phone_number)
+    content = {'form': invite_code_form, 'user': request.user, 'invite_code': user.invite_code, 'message': message,
+               'invited_users': invited_users}
     if request.method == 'POST':
         if request.POST.get('invite_code') in codes:
             user.invite_code = request.POST.get('invite_code')

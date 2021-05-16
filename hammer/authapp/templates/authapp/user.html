@@ -16,10 +16,20 @@
         <input class="form-control" type="submit" value="ввести код">
     {% endif %}
 </form>
-{% if message == 1%}
+{% if message == 1 %}
     <p>Код сохранен!</p>
 {% elif message == 2 %}
     <p>Нет пользователя с таким кодом!</p>
 {% endif %}
+<h2>Приглашенные пользователи:</h2>
+{% if invited_users %}
+    <ul>
+    {% for u in invited_users %}
+        <li>{{ u }}</li>
+    {% endfor %}
+{% else %}
+    <p>Нет приглашенных пользователей!</p>
+{% endif %}
+</ul>
 </body>
 </html>
