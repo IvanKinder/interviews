@@ -7,5 +7,5 @@ class ReferalUser(User):
 
     phone_number = models.IntegerField(verbose_name='номер телефона', unique=True)
     code = models.CharField(max_length=6, verbose_name='инвайт-код', unique=True)
-    invited_users = models.JSONField(verbose_name='приглашенные пользователи', blank=True, null=True)
+    invited_users = models.JSONField(verbose_name='приглашенные пользователи', blank=True, null=True)  # бесполезное
     invite_code = models.CharField(max_length=6, verbose_name='код пригласившего', blank=True)

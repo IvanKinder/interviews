@@ -6,13 +6,19 @@ from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework import parsers, renderers
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.compat import coreapi, coreschema
 from rest_framework.response import Response
+from rest_framework.schemas import ManualSchema
+from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.views import APIView
 
 from authapp.forms import ReferalUserLoginForm, ReferalUserCodeForm, InputCodeForm
 from authapp.models import ReferalUser
-from authapp.serializers import ReferalUserSerializer
+from authapp.serializers import ReferalUserSerializer, AuthTokenSerializer
 
 TMP_CODE = []
 
@@ -101,13 +107,11 @@ def user(request):
     return render(request, 'authapp/user.html', content)
 
 
-class ReferalUserAPIView(APIView):
-    renderer_classes = [JSONRenderer]
+class ReferalUserAPIView(ModelViewSet):
+    """ api view для юзера """
 
-    def get(self, request, format=None):
-        users = ReferalUser.objects.all()
-        serializer = ReferalUserSerializer(users, many=True)
-        return Response(serializer.data)
+    queryset = ReferalUser.objects.all()
+    serializer_class = ReferalUserSerializer
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
@@ -116,3 +120,51 @@ class ReferalUserAPIView(APIView):
     @classmethod
     def get_extra_actions(cls):
         return []
+
+
+class MyAuthToken(APIView):
+    """ Переопределение api view для токена """
+
+    throttle_classes = ()
+    permission_classes = ()
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+    renderer_classes = (renderers.JSONRenderer,)
+    serializer_class = AuthTokenSerializer
+
+    if coreapi_schema.is_enabled():
+        schema = ManualSchema(
+            fields=[
+                coreapi.Field(
+                    name="phone_number",
+                    required=True,
+                    location='form',
+                    schema=coreschema.String(
+                        title="phone_number",
+                        description="Valid phone_number for authentication",
+                    ),
+                ),
+            ],
+            encoding="application/json",
+        )
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self
+        }
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return self.serializer_class(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        print(serializer)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+
+
+obtain_auth_token = MyAuthToken.as_view()
