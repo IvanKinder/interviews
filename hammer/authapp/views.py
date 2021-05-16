@@ -9,7 +9,6 @@ from django.utils.decorators import method_decorator
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.compat import coreapi, coreschema
 from rest_framework.response import Response
 from rest_framework.schemas import ManualSchema
@@ -19,6 +18,7 @@ from rest_framework.views import APIView
 from authapp.forms import ReferalUserLoginForm, ReferalUserCodeForm, InputCodeForm
 from authapp.models import ReferalUser
 from authapp.serializers import ReferalUserSerializer, AuthTokenSerializer
+
 
 TMP_CODE = []
 
