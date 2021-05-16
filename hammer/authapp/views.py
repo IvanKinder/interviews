@@ -4,12 +4,15 @@ import time
 
 from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
+from django.utils.decorators import method_decorator
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from authapp.forms import ReferalUserLoginForm, ReferalUserCodeForm, InputCodeForm
 from authapp.models import ReferalUser
+from authapp.serializers import ReferalUserSerializer
 
 TMP_CODE = []
 
@@ -96,3 +99,20 @@ def user(request):
             message = 2
         content = {'form': invite_code_form, 'user': user, 'message': message}
     return render(request, 'authapp/user.html', content)
+
+
+class ReferalUserAPIView(APIView):
+    renderer_classes = [JSONRenderer]
+
+    def get(self, request, format=None):
+        users = ReferalUser.objects.all()
+        serializer = ReferalUserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
