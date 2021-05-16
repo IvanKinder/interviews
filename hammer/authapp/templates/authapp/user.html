@@ -7,14 +7,19 @@
 <body>
 <form class="form-horizontal" action="#" method="post">
     {% csrf_token %}
-    {{ invite_code }}
+    {{ user }}
     {% if invite_code %}
         <h2>Приглашен по коду: {{ invite_code }}</h2>
     {% else %}
         {{ form.as_p }}
+        <br>
+        <input class="form-control" type="submit" value="ввести код">
     {% endif %}
-    <br>
-    <input class="form-control" type="submit" value="ввести код">
 </form>
+{% if message == 1%}
+    <p>Код сохранен!</p>
+{% elif message == 2 %}
+    <p>Нет пользователя с таким кодом!</p>
+{% endif %}
 </body>
 </html>

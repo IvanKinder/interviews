@@ -11,7 +11,6 @@ from django.urls import reverse
 from authapp.forms import ReferalUserLoginForm, ReferalUserCodeForm, InputCodeForm
 from authapp.models import ReferalUser
 
-
 TMP_CODE = []
 
 
@@ -78,15 +77,18 @@ def user(request):
     """ Представление профиля пользователя """
 
     invite_code_form = InputCodeForm(data=request.POST)
+    user = ReferalUser.objects.get(username=request.user)
+    codes = []
+    message = 0
+    for u in ReferalUser.objects.all():
+        codes.append(u.code)
+    content = {'form': invite_code_form, 'user': request.user, 'invite_code': user.invite_code, 'message': message}
     if request.method == 'POST':
-        codes = []
-        for user in ReferalUser.objects.all():
-            codes.append(user.code)
-        user = ReferalUser.objects.get(username=request.user)
         if request.POST.get('invite_code') in codes:
             user.invite_code = request.POST.get('invite_code')
             user.save()
-            content = {'user': user, 'invite_code': user.invite_code}
-            return render(request, 'authapp/user.html', content)
-    content = {'form': invite_code_form, 'user': request.user, 'invite_code': request.user.invite_code}
+            message = 1
+        else:
+            message = 2
+        content = {'form': invite_code_form, 'user': user, 'message': message}
     return render(request, 'authapp/user.html', content)
