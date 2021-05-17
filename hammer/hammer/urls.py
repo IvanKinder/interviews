@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 from authapp.views import login, tmp_code, user, ReferalUserAPIView, obtain_auth_token
 
 router = DefaultRouter()
-router.register('users', ReferalUserAPIView, basename='users')
+# router.register('users', ReferalUserAPIView, basename='users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

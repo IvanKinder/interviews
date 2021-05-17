@@ -158,12 +158,21 @@ class MyAuthToken(APIView):
         kwargs['context'] = self.get_serializer_context()
         return self.serializer_class(*args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
+        TMP_CODE.append(generate_alphanum_random_string(4))
+        content = {'send this code to post': TMP_CODE[0]}
+        time.sleep(3)
+        return Response(content)
+
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        if request.data['code'] == TMP_CODE[0]:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key})
+        else:
+            return Response({'answer from server': 'Your code is invalid'})
 
 
 obtain_auth_token = MyAuthToken.as_view()

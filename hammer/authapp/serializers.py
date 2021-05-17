@@ -34,7 +34,11 @@ class AuthTokenSerializer(serializers.Serializer):
     """ Переопределение сериализатора для токена """
 
     phone_number = serializers.IntegerField(
-        label=_("Phone_number"),
+        label=_("phone_number"),
+        write_only=True
+    )
+    code = serializers.CharField(
+        label=_("code"),
         write_only=True
     )
     token = serializers.CharField(
@@ -45,8 +49,9 @@ class AuthTokenSerializer(serializers.Serializer):
     def validate(self, attrs):
         """ Переопределение валидации для токена """
 
+        code = attrs.get('code')
         phone_number = attrs.get('phone_number')
-        if phone_number:
+        if phone_number and code:
             try:
                 user = ReferalUser.objects.get(phone_number=phone_number)
             except Exception:
