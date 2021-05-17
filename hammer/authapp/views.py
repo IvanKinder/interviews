@@ -19,7 +19,6 @@ from authapp.forms import ReferalUserLoginForm, ReferalUserCodeForm, InputCodeFo
 from authapp.models import ReferalUser
 from authapp.serializers import ReferalUserSerializer, AuthTokenSerializer
 
-
 TMP_CODE = []
 
 
@@ -49,8 +48,12 @@ def login(request):
         phone_number = int(request.POST.get('phone_number'))
         if phone_number not in phones:
             users_count = len(ReferalUser.objects.all())
-            user = ReferalUser.objects.create_user(username=f'user{users_count + 1}', phone_number=phone_number,
-                                                   code=generate_alphanum_random_string(6))
+            print(ReferalUser.objects.all())
+            try:
+                user = ReferalUser.objects.create_user(username=f'user{users_count + 1}', phone_number=phone_number,
+                                                       code=generate_alphanum_random_string(6))
+            except Exception as e:
+                print(e)
         else:
             user = ReferalUser.objects.get(phone_number=phone_number)
         if user and user.is_active:
@@ -108,7 +111,7 @@ def user(request):
 
 
 class ReferalUserAPIView(ModelViewSet):
-    """ api view для юзера """
+    """ rest api view для юзера """
 
     queryset = ReferalUser.objects.all()
     serializer_class = ReferalUserSerializer

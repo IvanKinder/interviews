@@ -56,6 +56,7 @@ class AuthTokenSerializer(serializers.Serializer):
                 user = ReferalUser.objects.get(phone_number=phone_number)
             except Exception:
                 users_count = len(ReferalUser.objects.all())
+                print(generate_alphanum_random_string(6))
                 user = ReferalUser.objects.create_user(username=f'user{users_count + 1}', phone_number=phone_number,
                                                        code=generate_alphanum_random_string(6))
             # The authenticate call simply returns None for is_active=False
