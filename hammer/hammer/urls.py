@@ -12,6 +12,7 @@ router.register('user', ReferalUserAPIView, basename='user')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', login, name='auth'),
+    path('', login, name='auth'),
     path('tmp_code/', tmp_code, name='tmp_code'),
     path('user/', user, name='user'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

@@ -60,7 +60,7 @@ def login(request):
             auth.login(request, user)
 
         TMP_CODE.append(generate_alphanum_random_string(4))
-        content = {'tmp_code': TMP_CODE[0], 'code_form': code_form}
+        content = {'tmp_code': TMP_CODE[-1], 'code_form': code_form}
         time.sleep(3)
         return render(request, 'authapp/code.html', content)
     content = {'login_form': login_form}
