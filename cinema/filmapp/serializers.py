@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer, HyperlinkedModelSerializer
 
 from filmapp.models import Film, Comment, Star
 
@@ -8,10 +8,10 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('first_name', 'last_name',)
 
 
-class FilmSerializer(ModelSerializer):
+class FilmSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Film
@@ -26,7 +26,17 @@ class CommentSerializer(ModelSerializer):
 
 
 class StarSerializer(ModelSerializer):
+    film = FilmSerializer()
 
     class Meta:
         model = Star
-        fields = '__all__'
+        fields = ('film', 'stars',)
+
+
+class CommentsOfFilmSerializer(ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Comment
+        fields = ('user', 'created_at', 'comment',)
+
