@@ -1,10 +1,15 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
+from rest_framework import status
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from filmapp.models import Film, Comment, Star
-from filmapp.serializers import FilmSerializer, CommentSerializer, CommentsOfFilmSerializer, StarSerializer
+from filmapp.serializers import FilmSerializer, CommentSerializer, CommentsOfFilmSerializer, StarSerializer, \
+    UserRegistrSerializer
 
 
 class FilmListView(ModelViewSet):
@@ -32,12 +37,32 @@ class CommentListView(ModelViewSet):
 
 
 class CommentsOfFilmView(ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentsOfFilmSerializer
+    queryset = Film.objects.all()
+    serializer_class = CommentSerializer
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        comments = Comment.objects.filter(film=instance.id)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        comment = Comment.objects.create(user=request.user, film=instance, comment=request.data['comment'])
+        comment.save()
+        return Response(serializer.data)
 
 
 class StarsListView(ModelViewSet):
@@ -58,3 +83,24 @@ class StarsListView(ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class RegistrUserView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegistrSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            serializer.save()
+            data['response'] = True
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            data = serializer.errors
+            return Response(data)
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
