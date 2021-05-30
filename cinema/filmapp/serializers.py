@@ -28,11 +28,21 @@ class CommentSerializer(ModelSerializer):
 
 
 class StarSerializer(ModelSerializer):
-    film = FilmSerializer()
+    # film = FilmSerializer()
+    # user = UserSerializer()
 
     class Meta:
         model = Star
         fields = ('film', 'stars',)
+
+
+class StarAddSerializer(ModelSerializer):
+    # film = FilmSerializer()
+    # user = UserSerializer()
+
+    class Meta:
+        model = Star
+        fields = ('user', 'film', 'stars',)
 
 
 class CommentsOfFilmSerializer(ModelSerializer):

@@ -31,3 +31,6 @@ class Star(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
     film = models.ForeignKey(Film, on_delete=models.CASCADE, verbose_name='фильм')
     stars = models.CharField(max_length=1, blank=True, choices=count_of_stars, verbose_name='количество звёздочек')
+
+    class Meta:
+        unique_together = ('user', 'film')

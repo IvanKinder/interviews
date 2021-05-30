@@ -9,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from filmapp.models import Film, Comment, Star
 from filmapp.serializers import FilmSerializer, CommentSerializer, CommentsOfFilmSerializer, StarSerializer, \
-    UserRegistrSerializer
+    UserRegistrSerializer, StarAddSerializer
 
 
 class FilmListView(ModelViewSet):
@@ -47,7 +47,7 @@ class CommentsOfFilmView(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         comments = Comment.objects.filter(film=instance.id)
-        serializer = CommentSerializer(comments, many=True)
+        serializer = CommentsOfFilmSerializer(comments, many=True)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
@@ -67,7 +67,7 @@ class CommentsOfFilmView(ModelViewSet):
 
 class StarsListView(ModelViewSet):
     queryset = Star.objects.all()
-    serializer_class = StarSerializer
+    serializer_class = StarAddSerializer
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
@@ -83,6 +83,15 @@ class StarsListView(ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        serializer = StarAddSerializer(data=data)
+        print(serializer)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class RegistrUserView(CreateAPIView):
