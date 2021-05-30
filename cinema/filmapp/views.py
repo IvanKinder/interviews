@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-from django.http import QueryDict
 from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
@@ -94,7 +93,7 @@ class StarsListView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(self.get_serializer().data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class RegistrUserView(CreateAPIView):

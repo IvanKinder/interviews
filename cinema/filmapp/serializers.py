@@ -26,11 +26,11 @@ class CommentSerializer(ModelSerializer):
         fields = ('created_at', 'comment',)
 
 
-class StarSerializer(ModelSerializer):
+class StarSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Star
-        fields = ('film', 'stars',)
+        fields = ('id', 'film', 'stars',)
 
 
 class StarAddSerializer(ModelSerializer):
