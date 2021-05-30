@@ -7,6 +7,9 @@ class Film(models.Model):
     name = models.CharField(max_length=32, verbose_name='название')
     source = models.TextField(blank=True, verbose_name='ссылка на фильм')
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
