@@ -17,6 +17,9 @@ class Comment(models.Model):
     created_at = models.DateTimeField(default=now, verbose_name='дата создания')
     comment = models.TextField(blank=True, verbose_name='комментарий')
 
+    class Meta:
+        unique_together = ('user', 'film')
+
 
 class Star(models.Model):
 

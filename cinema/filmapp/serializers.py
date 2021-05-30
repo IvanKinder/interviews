@@ -20,7 +20,6 @@ class FilmSerializer(HyperlinkedModelSerializer):
 
 
 class CommentSerializer(ModelSerializer):
-    # user = UserSerializer()
 
     class Meta:
         model = Comment
@@ -28,8 +27,6 @@ class CommentSerializer(ModelSerializer):
 
 
 class StarSerializer(ModelSerializer):
-    # film = FilmSerializer()
-    # user = UserSerializer()
 
     class Meta:
         model = Star
@@ -37,8 +34,6 @@ class StarSerializer(ModelSerializer):
 
 
 class StarAddSerializer(ModelSerializer):
-    # film = FilmSerializer()
-    # user = UserSerializer()
 
     class Meta:
         model = Star

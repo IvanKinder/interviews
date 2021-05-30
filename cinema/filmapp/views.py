@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
+from django.http import QueryDict
 from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
@@ -67,7 +68,7 @@ class CommentsOfFilmView(ModelViewSet):
 
 class StarsListView(ModelViewSet):
     queryset = Star.objects.all()
-    serializer_class = StarAddSerializer
+    serializer_class = StarSerializer
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated))
     def dispatch(self, *args, **kwargs):
@@ -86,8 +87,10 @@ class StarsListView(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
+        data._mutable = True
+        data.__setitem__('user', str(request.user.id))
+        data._mutable = False
         serializer = StarAddSerializer(data=data)
-        print(serializer)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
