@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.timezone import now
 
 
 class Film(models.Model):
@@ -10,6 +11,7 @@ class Film(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
     film = models.ForeignKey(Film, on_delete=models.CASCADE, verbose_name='фильм')
+    created_at = models.DateTimeField(default=now, verbose_name='дата создания')
     comment = models.TextField(blank=True, verbose_name='комментарий')
 
 
