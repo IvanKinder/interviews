@@ -67,11 +67,6 @@
     margin-top: -92px;
 }
 
-/*.left_text {*/
-/*    padding-top: 50px;*/
-/*    padding-left: 30px;*/
-/*}*/
-
 .text {
     font-family: Neue Haas Unica W1G;
     font-style: normal;
@@ -84,7 +79,47 @@
     padding-left: 30px;
 }
 
-.right_name{
+.right_name {
     margin-top: -92px;
     padding-left: 100px;
+}
+
+.mid {
+    margin-top: -86px;
+    padding-left: 100px;
+}
+
+.mini {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    padding-left: 20px;
+}
+
+.higher{
+    color: #777777;
+    padding-top: 36px;
+    margin-bottom: 0px;
+}
+
+.middle{
+    padding-left: 20px;
+    box-shadow: none;
+    margin-top: 0px;
+    padding-top: 4px;
+    margin-bottom: 0px;
+    padding-bottom: 4px;
+}
+
+.center{
+    margin-top: 60px;
+}
+
+.down{
+    margin-top: 0px;
+}
+
+.box_mid{
+    box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.06);
 }
