@@ -20,9 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27e3c0be-16aa-485d-abdf-303e121eee6c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/interviews.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/interviews.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cinema/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/cinema/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cinema/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cinema/README.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cinema/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/cinema/db.sqlite3" afterDir="false" />
     </list>
@@ -78,7 +78,7 @@
       <updated>1622296683970</updated>
       <workItem from="1622296686465" duration="414000" />
       <workItem from="1622416416938" duration="6141000" />
-      <workItem from="1622580876929" duration="9736000" />
+      <workItem from="1622580876929" duration="10239000" />
     </task>
     <servers />
   </component>
