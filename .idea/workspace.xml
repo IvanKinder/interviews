@@ -20,7 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="27e3c0be-16aa-485d-abdf-303e121eee6c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
     </list>
@@ -75,7 +75,8 @@
       <option name="presentableId" value="Default" />
       <updated>1622296683970</updated>
       <workItem from="1622296686465" duration="414000" />
-      <workItem from="1622416416938" duration="5920000" />
+      <workItem from="1622416416938" duration="6141000" />
+      <workItem from="1622580876929" duration="2199000" />
     </task>
     <servers />
   </component>
@@ -92,5 +93,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

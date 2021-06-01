@@ -46,38 +46,45 @@
     padding-top: 15px;
 }
 
-.big_rect {
-    padding-top: 80px;
+.content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
+    padding-left: 165px;
+    padding-right: 165px;
 }
 
-.big_pic_text {
+.name {
     font-family: Oleg Sans;
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
     line-height: 29px;
-    margin-left: 350px;
-    margin-top: -90px;
 }
 
-.foto_1 {
-    height: 285px;
-    width: 825px;
-    margin-left: 165px;
-    box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.06);
+.left_name {
+    padding-left: 386px;
+    margin-top: -92px;
 }
 
-.under_big_text {
+/*.left_text {*/
+/*    padding-top: 50px;*/
+/*    padding-left: 30px;*/
+/*}*/
+
+.text {
     font-family: Neue Haas Unica W1G;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 27px;
-    margin-top: 70px;
-    margin-bottom: 0px;
-    margin-left: 80px;
+    padding-bottom: 12px;
+    box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.06);
+    padding-top: 50px;
+    padding-left: 30px;
 }
-.mid_rect{
-    margin-top: -90px;
-    margin-left: 850px;
+
+.right_name{
+    margin-top: -92px;
+    padding-left: 100px;
 }
