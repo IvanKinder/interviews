@@ -123,3 +123,22 @@
 .box_mid{
     box-shadow: 0px 15px 20px 0px rgba(0, 0, 0, 0.06);
 }
+
+.white_rect{
+    width: 61px;
+    height: 25px;
+    position: absolute;
+    margin-top: 115px;
+}
+
+.w2{
+    margin-left: 285px;
+}
+
+.w3{
+    margin-left: 570px;
+}
+
+.w4{
+    margin-left: 855px;
+}
