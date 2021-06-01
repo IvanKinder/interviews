@@ -142,3 +142,25 @@
 .w4{
     margin-left: 855px;
 }
+
+.raiting{
+    position: absolute;
+    margin-top: 120px;
+    margin-left: 10px;
+}
+
+.star{
+    margin-right: 2px;
+}
+
+.r2{
+    margin-left: 295px;
+}
+
+.r3{
+    margin-left: 580px;
+}
+
+.r4{
+    margin-left: 865px;
+}
