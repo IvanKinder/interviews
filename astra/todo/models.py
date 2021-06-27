@@ -3,24 +3,24 @@ from django.db.models.deletion import Collector
 from django.utils.timezone import now
 
 
-# Модель категорий
 class Category(models.Model):
+    """Модель категорий"""
     name = models.CharField(max_length=16, verbose_name='Название категории')
 
     def __str__(self):
         return self.name
 
 
-# Модель тегов
 class Tag(models.Model):
+    """Модель тегов"""
     name = models.CharField(max_length=16, verbose_name='Название тега')
 
     def __str__(self):
         return self.name
 
 
-# Модель Задачи
 class Task(models.Model):
+    """Модель Задачи"""
     name = models.CharField(max_length=64, verbose_name='Название задачи')
     deadline = models.DateField(blank=True, null=True, verbose_name='Крайний срок выполнения')
     description = models.TextField(blank=True, null=True, verbose_name='Описание задачи')
@@ -32,9 +32,9 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
-    # Переопределение метода save() для обновления поля updated_at()
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
+        """Переопределение метода save() для обновления поля updated_at()"""
         for field in self._meta.concrete_fields:
             if field.is_relation and field.is_cached(self):
                 obj = getattr(self, field.name, None)
@@ -91,8 +91,8 @@ class Task(models.Model):
         self.save_base(using=using, force_insert=force_insert,
                        force_update=force_update, update_fields=update_fields)
 
-    # Переопределение метода _do_update() для добавления логгирования
     def _do_update(self, base_qs, using, pk_val, values, update_fields, forced_update):
+        """Переопределение метода _do_update() для добавления логгирования"""
         for task in base_qs:
             if task.id == pk_val:
                 old_values = {'name': task.name, 'deadline': task.deadline, 'description': task.description, 'done': task.done, 'is_active': task.is_active, 'created_at': task.created_at, 'updated_at': task.updated_at}
@@ -115,8 +115,8 @@ class Task(models.Model):
             )
         return filtered._update(values) > 0
 
-    # Переопределение метода _do_insert() для добавления логгирования
     def _do_insert(self, manager, using, fields, returning_fields, raw):
+        """Переопределение метода _do_insert() для добавления логгирования"""
         with open('log.txt', 'a') as log_file:
             log_file.write(
                 f'{now()} => Добавлена новая задача "{self.name}"\n')
@@ -125,8 +125,8 @@ class Task(models.Model):
             using=using, raw=raw,
         )
 
-    # Переопределение метода delete() для добавления логгирования
     def delete(self, using=None, keep_parents=False):
+        """Переопределение метода delete() для добавления логгирования"""
         with open('log.txt', 'a') as log_file:
             log_file.write(
                 f'{now()} => Была удалена задача "{self.name}"\n')
@@ -141,13 +141,13 @@ class Task(models.Model):
         return collector.delete()
 
 
-# Модель, связывающая категорию с задачей
 class CategoryTask(models.Model):
+    """Модель, связывающая категорию с задачей"""
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Задача')
 
 
-# Модель, связывающая тег с задачей
 class TagTask(models.Model):
+    """Модель, связывающая тег с задачей"""
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Тег')
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='Задача')

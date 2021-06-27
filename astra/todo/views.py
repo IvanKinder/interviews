@@ -7,46 +7,46 @@ from todo.serializers import CategorySerializer, TagSerializer, TaskSerializer, 
 from todo.utils import export_to_file
 
 
-# контроллер категорий
 class CategoryViewSet(ModelViewSet):
+    """контроллер категорий"""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-# контроллер тегов
 class TagViewSet(ModelViewSet):
+    """контроллер тегов"""
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
 
-# контроллер задач
 class TaskViewSet(ModelViewSet):
+    """контроллер задач"""
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
 
-# контроллер связи категорий с задачами
 class CategoryTaskViewSet(ModelViewSet):
+    """контроллер связи категорий с задачами"""
     queryset = CategoryTask.objects.all()
     serializer_class = CategoryTaskSerializer
 
 
-# контроллер связи тегов с задачами
 class TagTaskViewSet(ModelViewSet):
+    """контроллер связи тегов с задачами"""
     queryset = TagTask.objects.all()
     serializer_class = TagTaskSerializer
 
 
-# функция сбора данных задачи
 def get_task_data(task_pk):
+    """функция сбора данных задачи"""
     task_to_save = Task.objects.get(pk=task_pk)
     fields = ['name', 'deadline', 'description', 'done', 'created_at', 'updated_at', 'is_active']
     file_name = f'{Task.objects.get(pk=task_pk).name}'
     return task_to_save, fields, file_name
 
 
-# контроллер экспорта данных задачи в файл
 class TaskExport(APIView):
+    """контроллер экспорта данных задачи в файл"""
     def get(self, request, pk):
         task = get_task_data(pk)
         export_to_file(task=task[0], fields=task[1], file_name=task[2])

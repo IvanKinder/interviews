@@ -3,8 +3,8 @@ import csv
 from openpyxl import Workbook, load_workbook
 
 
-# утилита для экспорта данных задачи в файл
 def export_to_file(task, fields, file_name):
+    """утилита для экспорта данных задачи в файл"""
     wb = Workbook()
     ws = wb.active
     ws.title = "Task"
