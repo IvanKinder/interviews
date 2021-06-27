@@ -1,4 +1,3 @@
-from django.utils.timezone import now
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -37,13 +36,12 @@ class TagTaskViewSet(ModelViewSet):
 def get_task_data(task_pk):
     task_to_save = Task.objects.get(pk=task_pk)
     fields = ['name', 'deadline', 'description', 'done', 'created_at', 'updated_at', 'is_active']
-    titles = ['name', 'deadline', 'description', 'done', 'created_at', 'updated_at', 'is_active']
-    file_name = f'task.{now()}'
-    return task_to_save, fields, titles, file_name
+    file_name = f'{Task.objects.get(pk=task_pk).name}'
+    return task_to_save, fields, file_name
 
 
 class TaskExportAsCSV(APIView):
     def get(self, request, pk):
         task = get_task_data(pk)
-        export_to_csv(task=task[0], fields=task[1], titles=task[2], file_name=task[3])
+        export_to_csv(task=task[0], fields=task[1], file_name=task[2])
         return Response('Файл сохранен!')
