@@ -3,6 +3,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 from todo.models import Category, Tag, Task, CategoryTask, TagTask
 
 
+# сериалайзер для категорий
 class CategorySerializer(HyperlinkedModelSerializer):
 
     class Meta:
@@ -10,6 +11,7 @@ class CategorySerializer(HyperlinkedModelSerializer):
         fields = '__all__'
 
 
+# сериалайзер для тегов
 class TagSerializer(HyperlinkedModelSerializer):
 
     class Meta:
@@ -17,6 +19,7 @@ class TagSerializer(HyperlinkedModelSerializer):
         fields = '__all__'
 
 
+# сериалайзер для задач
 class TaskSerializer(HyperlinkedModelSerializer):
 
     class Meta:
@@ -24,6 +27,7 @@ class TaskSerializer(HyperlinkedModelSerializer):
         fields = '__all__'
 
 
+# сериалайзер для связи категорий с задачами
 class CategoryTaskSerializer(HyperlinkedModelSerializer):
 
     class Meta:
@@ -31,6 +35,7 @@ class CategoryTaskSerializer(HyperlinkedModelSerializer):
         fields = '__all__'
 
 
+# сериалайзер для связи тегов с задачами
 class TagTaskSerializer(HyperlinkedModelSerializer):
 
     class Meta:

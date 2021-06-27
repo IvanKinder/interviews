@@ -3,23 +3,8 @@ import csv
 from openpyxl import Workbook, load_workbook
 
 
-def export_to_csv(task, fields, file_name):
-    # with open(f'{file_name}.csv', "w", newline='', encoding='utf-8') as csv_file:
-    #     writer = csv.writer(csv_file, delimiter=';')
-    #
-    #     if fields:
-    #         headers = fields
-    #         if titles:
-    #             titles = titles
-    #         else:
-    #             titles = headers
-    #     else:
-    #         headers = []
-    #         titles = headers
-    #
-    #     writer.writerow(titles)
-    #     data_to_export = [task.name, task.deadline, task.description, task.done, task.created_at, task.updated_at, task.is_active]
-    #     writer.writerow(data_to_export)
+# утилита для экспорта данных задачи в файл
+def export_to_file(task, fields, file_name):
     wb = Workbook()
     ws = wb.active
     ws.title = "Task"
