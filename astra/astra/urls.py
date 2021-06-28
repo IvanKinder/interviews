@@ -5,7 +5,8 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.routers import DefaultRouter
 
-from todo.views import CategoryViewSet, TagViewSet, TaskViewSet, CategoryTaskViewSet, TagTaskViewSet, TaskExport
+from todo.views import CategoryViewSet, TagViewSet, TaskViewSet, CategoryTaskViewSet, TagTaskViewSet, TaskExport, \
+    task_import
 
 router = DefaultRouter()
 router.register('category', CategoryViewSet)
@@ -29,9 +30,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # стандартная админка
     path('api/', include(router.urls)),  # точка входа api
     path('api/export/<int:pk>/', TaskExport.as_view()),  # url для экспорта задачи по id
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),  # url для OpenApi документации
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # url для OpenApi документации
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # url для OpenApi документации
-    path("schema/", SpectacularAPIView.as_view(), name="schema"),
-    # path("docs/", SpectacularSwaggerView.as_view(template_name="swagger-ui.html", url_name="schema"), name="swagger-ui",),
+    path('api/import/<str:filename>/', task_import),  # url для загрузки задачи из файла в корне проекта
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    # url для документации
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # url для документации
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # url для документации
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),  # url для выгрузки документации OpenApi 3
 ]

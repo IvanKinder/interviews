@@ -1,3 +1,9 @@
+import os
+
+import openpyxl
+from django.http import HttpResponse
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -47,7 +53,30 @@ def get_task_data(task_pk):
 
 class TaskExport(APIView):
     """контроллер экспорта данных задачи в файл"""
+
     def get(self, request, pk):
         task = get_task_data(pk)
         export_to_file(task=task[0], fields=task[1], file_name=task[2])
         return Response('Файл сохранен!')
+
+
+@api_view(('GET',))
+@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
+def task_import(request, filename):
+    """Функция импорта задачи из файла в корне проекта"""
+
+    try:
+        path = os.path.join(os.path.dirname(__file__), f'../{filename}')
+        wb = openpyxl.load_workbook(path)
+        sheet = wb.active
+
+        Task.objects.create(name=sheet['A2'].value, deadline=sheet['B2'].value, description=sheet['C2'].value,
+                            done=sheet['D2'].value, created_at=sheet['E2'].value, updated_at=sheet['F2'].value,
+                            is_active=sheet['G2'].value)
+
+        if 'format' in request.GET.keys():
+            return Response(f'Добавлена задача из файла {filename}')
+        else:
+            return HttpResponse(f'Добавлена задача из файла {filename}')
+    except Exception:
+        return HttpResponse(f'Некорректные данные в файле {filename}')

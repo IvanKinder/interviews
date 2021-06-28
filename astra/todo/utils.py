@@ -15,6 +15,7 @@ def export_to_file(task, fields, file_name):
     file = wb.active
 
     file.append(fields)
-    file.append([task.name, task.deadline, task.description, task.done, task.created_at, task.updated_at, task.is_active])
+    file.append(
+        [task.name, task.deadline, task.description, task.done, task.created_at, task.updated_at, task.is_active])
 
     wb.save(filename=filename)
