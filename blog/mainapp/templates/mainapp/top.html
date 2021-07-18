@@ -1,0 +1,15 @@
+<nav class="top">
+    <a class=toplink" href="#">blog</a>
+    <div>
+        <ul>
+            <li>
+                <a href="{% url 'main:index' %}">Главная</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'main:posts' %}">Мои статьи</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
