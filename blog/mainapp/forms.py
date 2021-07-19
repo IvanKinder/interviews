@@ -4,11 +4,24 @@ from mainapp.models import Post
 
 
 class PostForm(forms.ModelForm):
-
     class Meta:
         model = Post
-        fields = ('name', 'text',)
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'text': forms.Textarea(attrs={'class': 'form-control'}),
-        }
+        fields = ('name', 'text', 'picture',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('name', 'description',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''

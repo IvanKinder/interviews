@@ -1,0 +1,14 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <h2>Создание категории</h2>
+        <hr>
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Создать категорию">
+            <a href="{% url 'mainapp:categories' %}">Отмена</a>
+        </form>
+    </div>
+{% endblock %}

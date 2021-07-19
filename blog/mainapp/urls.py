@@ -13,10 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path
 
-from mainapp.views import PostListView, PostDetailView, PostUserView, PostCreateView, PostUpdateView, PostDeleteView
+from mainapp.views import PostListView, PostDetailView, PostUserView, PostCreateView, PostUpdateView, PostDeleteView, \
+    CategoryListView, PostsInCategoryDetailView, CategoryCreateView, CategoryDeleteView, CategoryUpdateView
 
 app_name = 'mainapp'
 
@@ -24,7 +26,12 @@ urlpatterns = [
     path('', PostListView.as_view(), name='home'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post'),
     path('posts/', PostUserView.as_view(), name='posts'),
-    path('create/', PostCreateView.as_view(), name='create'),
-    path('update/<int:pk>/', PostUpdateView.as_view(), name='update'),
-    path('delete/<int:pk>/', PostDeleteView.as_view(), name='delete'),
-]
+    path('categories/', CategoryListView.as_view(), name='categories'),
+    path('category/<int:pk', PostsInCategoryDetailView.as_view(), name='category'),
+    path('category/<int:pk', CategoryCreateView.as_view(), name='category_create'),
+    path('category/<int:pk', CategoryUpdateView.as_view(), name='category_update'),
+    path('category/<int:pk', CategoryDeleteView.as_view(), name='category_delete'),
+    path('create/', PostCreateView.as_view(), name='post_create'),
+    path('update/<int:pk>/', PostUpdateView.as_view(), name='post_update'),
+    path('delete/<int:pk>/', PostDeleteView.as_view(), name='post_delete'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

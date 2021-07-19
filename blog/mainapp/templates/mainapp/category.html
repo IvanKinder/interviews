@@ -1,0 +1,10 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <h2>{{ category.category }}</h2>
+        <p style="text-align: left">{{ category.category.description }}</p>
+        <br>
+        <a href="{% url 'mainapp:home' %}">Домой</a>
+    </div>
+{% endblock %}

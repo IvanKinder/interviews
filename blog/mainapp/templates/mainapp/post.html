@@ -4,6 +4,10 @@
     <div>
         <h2>{{ post.name }}</h2>
         <p style="text-align: left">{{ post.text }}</p>
+        {% if post.picture %}
+            <img src="/media/{{ post.picture }}" alt="post picture">
+        {% endif %}
+        <br>
         <a href="{% url 'mainapp:home' %}">Домой</a>
     </div>
 {% endblock %}

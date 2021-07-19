@@ -10,13 +10,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата изменения')
     is_active = models.BooleanField(default=True, verbose_name='Активна')
-
-
-class MediaPost(models.Model):
-    """Модель картинок для статьи"""
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Статья')
-    number = models.IntegerField(verbose_name='Порядковый номер')
-    media_link = models.CharField(max_length=128, verbose_name='Ссылка на изображение')
+    picture = models.ImageField(upload_to='images', blank=True, verbose_name='Картинка')
 
 
 class Category(models.Model):

@@ -1,0 +1,30 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <h2>Категории</h2>
+    {% if user.is_authenticated %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <a href="{% url 'mainapp:create' %}">Добавить категорию</a>
+        </form>
+    {% endif %}
+        <hr>
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link"
+                                             href="?page={{ page_obj.previous_page_number }}">Предыдущая</a></li>
+                {% endif %}
+                <li class="page-item"><span
+                        class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link"
+                                             href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

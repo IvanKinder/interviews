@@ -4,7 +4,7 @@
     <div>
         <h2>Редактироваие статьи</h2>
         <hr>
-        <form action="" method="post" novalidate>
+        <form action="" method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Обновить">
