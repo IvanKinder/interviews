@@ -1,15 +1,15 @@
 <nav class="top">
-    <a class=toplink" href="#">blog</a>
     <div>
-        <ul>
+        <ul style="display: flex; justify-content: space-evenly">
             <li>
-                <a href="{% url 'main:index' %}">Главная</a>
+                <a href="{% url 'mainapp:home' %}">Главная</a>
             </li>
             {% if user.is_authenticated %}
                 <li>
-                    <a href="{% url 'main:posts' %}">Мои статьи</a>
+                    <a href="{% url 'mainapp:posts' %}">Мои статьи</a>
                 </li>
             {% endif %}
         </ul>
+        <hr>
     </div>
 </nav>

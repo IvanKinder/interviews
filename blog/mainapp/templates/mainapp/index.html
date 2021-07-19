@@ -6,11 +6,11 @@
             <form action="" method="post">
                 {% csrf_token %}
                 {% for post in post_list %}
-                    <h2 style="justify-content: space-between; text-align: center">"{{ post.title }}"
+                    <h2 style="justify-content: space-between; text-align: center">"{{ post.name }}"
                         автор: {{ post.user }}</h2>
                     <hr>
-                    <p style="word-wrap: break-word;">{{ post.description | truncatewords:40 }} <a
-                            href="{% url 'main:post' post.id %}">Читать далее</a></p>
+                    <p style="word-wrap: break-word;">{{ post.text | truncatewords:20 }}
+                        <a href="{% url 'mainapp:post' post.id %}">Читать далее</a></p>
                     <hr>
                     <hr>
                 {% endfor %}

@@ -1,0 +1,14 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <h2>Редактироваие статьи</h2>
+        <hr>
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Обновить">
+            <a href="{% url 'mainapp:posts' %}">Отмена</a>
+        </form>
+    </div>
+{% endblock %}

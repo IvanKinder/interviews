@@ -16,9 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from mainapp.views import PostListView
+from mainapp.views import PostListView, PostDetailView, PostUserView, PostCreateView, PostUpdateView, PostDeleteView
 
+app_name = 'mainapp'
 
 urlpatterns = [
     path('', PostListView.as_view(), name='home'),
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post'),
+    path('posts/', PostUserView.as_view(), name='posts'),
+    path('create/', PostCreateView.as_view(), name='create'),
+    path('update/<int:pk>/', PostUpdateView.as_view(), name='update'),
+    path('delete/<int:pk>/', PostDeleteView.as_view(), name='delete'),
 ]

@@ -1,0 +1,56 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <h2>Мои статьи</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+                        <a href="{% url 'mainapp:create' %}">Добавить статью</a>
+            {% if user_posts %}
+                <table>
+                    <thead>
+                    <tr>
+                        <th scope="col" style="border: 2px solid black;">Название</th>
+                        <th scope="col" style="border: 2px solid black;">Автор</th>
+                        <th scope="col" style="border: 2px solid black;">Текст статьи</th>
+                        <th scope="col" style="border: 2px solid black;">Действия</th>
+                    </tr>
+                    </thead>
+                    {% for update in user_posts %}
+                        {% if update.user == user %}
+                            <tbody>
+                            <tr>
+                                <td style="border: 2px solid black;">{{ update.name }}</td>
+                                <td style="border: 2px solid black;">{{ update.user }}</td>
+                                <td style="border: 2px solid black;">{{ update.text | truncatewords:50 }} </td>
+                                <td style="border: 2px solid black;">
+                                                                        <a href="{% url 'mainapp:update' update.id %}">Изменить</a>
+                                                                        <a href="{% url 'mainapp:delete' update.id %}">Удалить</a>
+                                                                        <form action="#" method="post">
+                                </td>
+                            </tr>
+                            </tbody>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                </form>
+                <hr>
+            {% else %}
+                <h2>Нет статей</h2>
+            {% endif %}
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link"
+                                             href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                <li class="page-item"><span
+                        class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
