@@ -133,10 +133,9 @@ class PostsInCategoryDetailView(DetailView):
     paginate_by = 7
 
     def get_context_data(self, **kwargs):
-        print()
         context = super().get_context_data(**kwargs)
         context['title'] = f'Blog | Category'
-        # context['posts'] = Post.objects.filter(pk=PostToCategory.objects.get())
+        context['data'] = PostToCategory.objects.filter(category_id=self.request.__dict__['resolver_match'][2]['pk'])
         return context
 
 
