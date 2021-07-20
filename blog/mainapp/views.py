@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from mainapp.forms import PostForm
+from mainapp.forms import PostForm, CategoryForm
 from mainapp.models import Post, Category, PostToCategory
 
 
@@ -54,7 +54,12 @@ class PostCreateView(CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        post = Post.objects.create(user=self.request.user, name=self.request.POST['name'], text=self.request.POST['text'], picture=request._files['picture'])
+        try:
+            post = Post.objects.create(user=self.request.user, name=self.request.POST['name'],
+                                       text=self.request.POST['text'], picture=request._files['picture'])
+        except Exception:
+            post = Post.objects.create(user=self.request.user, name=self.request.POST['name'],
+                                       text=self.request.POST['text'])
         post.save()
         return HttpResponseRedirect('/posts/')
 
@@ -80,6 +85,7 @@ class PostDeleteView(DeleteView):
 class CategoryListView(ListView):
     model = Category
     template_name = 'mainapp/categories.html'
+    context_object_name = 'categories'
     ordering = ['-created_at']
     paginate_by = 7
 
@@ -90,38 +96,33 @@ class CategoryListView(ListView):
 
 
 class CategoryCreateView(CreateView):
-    form_class = PostForm
+    form_class = CategoryForm
     model = Post
-    success_url = '/posts/'
-    template_name = 'mainapp/post_create.html'
+    success_url = '/categories/'
+    template_name = 'mainapp/category_create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Blog | Create New Post'
-        return context
-
-    def post(self, request, *args, **kwargs):
-        post = Post.objects.create(user=self.request.user, name=self.request.POST['name'], text=self.request.POST['text'], picture=request._files['picture'])
-        post.save()
-        return HttpResponseRedirect('/posts/')
-
-
-class CategoryUpdateView(UpdateView):
-    form_class = PostForm
-    model = Post
-    success_url = '/posts/'
-    template_name = 'mainapp/post_update.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Blog | Update'
+        context['title'] = 'Blog | Create New Category'
         return context
 
 
-class CategoryDeleteView(DeleteView):
-    model = Post
-    success_url = '/posts/'
-    template_name = 'mainapp/post_delete.html'
+# class CategoryUpdateView(UpdateView):
+#     form_class = PostForm
+#     model = Post
+#     success_url = '/posts/'
+#     template_name = 'mainapp/post_update.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'Blog | Update'
+#         return context
+#
+#
+# class CategoryDeleteView(DeleteView):
+#     model = Post
+#     success_url = '/posts/'
+#     template_name = 'mainapp/post_delete.html'
 
 
 class PostsInCategoryDetailView(DetailView):
@@ -132,8 +133,44 @@ class PostsInCategoryDetailView(DetailView):
     paginate_by = 7
 
     def get_context_data(self, **kwargs):
-        print(self.request.GET)
+        print()
         context = super().get_context_data(**kwargs)
         context['title'] = f'Blog | Category'
         # context['posts'] = Post.objects.filter(pk=PostToCategory.objects.get())
+        return context
+
+
+class AddPostToCategoryListView(ListView):
+    model = Post
+    success_url = '/categories/'
+    context_object_name = 'posts'
+    ordering = ['-created_at']
+    paginate_by = 10
+    template_name = 'mainapp/post_to_category.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Blog | Add To Category'
+        context['category'] = self.request.__dict__['resolver_match'][2]['pk']
+        return context
+
+
+class AddPostToCategoryView(ListView):
+    model = PostToCategory
+    success_url = '/categories/'
+    context_object_name = 'posts_to_category'
+    # ordering = ['-created_at']
+    paginate_by = 10
+    template_name = 'mainapp/add_post.html'
+
+    def get_context_data(self, **kwargs):
+        pk_data = self.request.__dict__['resolver_match'][2]
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Blog | Add Post'
+
+        try:
+            added_post = PostToCategory.objects.create(post_id=pk_data['pk'], category_id=pk_data['cat_pk'])
+            added_post.save()
+        except Exception:
+            context['data'] = 'Статья уже в этой категории'
         return context

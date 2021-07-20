@@ -32,6 +32,9 @@ class PostToCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Статья')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
 
+    class Meta:
+        unique_together = ('post', 'category')
+
 
 class PostToTag(models.Model):
     """Связь статьи и тега"""

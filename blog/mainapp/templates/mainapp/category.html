@@ -2,8 +2,11 @@
 {% load static %}
 {% block content %}
     <div>
-        <h2>{{ category.category }}</h2>
-        <p style="text-align: left">{{ category.category.description }}</p>
+        <h2>{{ category.name }}</h2>
+        <p style="text-align: left">{{ category.description }}</p>
+        <br>
+        <a href="{% url 'mainapp:add_post_list' category.id %}">Добавить статью в категорию "{{ category.name }}"</a>
+
         <br>
         <a href="{% url 'mainapp:home' %}">Домой</a>
     </div>

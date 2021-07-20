@@ -3,12 +3,36 @@
 {% block content %}
     <div>
         <h2>Категории</h2>
-    {% if user.is_authenticated %}
-        <form action="" method="post">
+        {% if user.is_authenticated %}
+            <form action="" method="post">
             {% csrf_token %}
-            <a href="{% url 'mainapp:create' %}">Добавить категорию</a>
-        </form>
-    {% endif %}
+            <a href="{% url 'mainapp:category_create' %}">Добавить категорию</a>
+        {% endif %}
+        {% if categories %}
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col" style="border: 2px solid black;">Название</th>
+                    <th scope="col" style="border: 2px solid black;">Описание</th>
+                    <th scope="col" style="border: 2px solid black;">Действия</th>
+                </tr>
+                </thead>
+                {% for category in categories %}
+                    <tbody>
+                    <tr>
+                        <td style="border: 2px solid black;">{{ category.name }}</td>
+                        <td style="border: 2px solid black;">{{ category.description }}</td>
+                        <td style="border: 2px solid black;">
+                            <form action="#" method="post">
+                                <a href="{% url 'mainapp:category' category.id %}">Статьи</a>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            </form>
+        {% endif %}
         <hr>
         <nav>
             <ul class="pagination">

@@ -1,0 +1,13 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        {% if data %}
+            {{ data }}
+        {% else %}
+            Статья добавлена
+        {% endif %}
+        <br>
+        <a href="{% url 'mainapp:home' %}">Домой</a>
+    </div>
+{% endblock %}

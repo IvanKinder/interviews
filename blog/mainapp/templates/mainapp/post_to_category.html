@@ -5,8 +5,7 @@
         <h2>Мои статьи</h2>
         <form action="" method="post">
             {% csrf_token %}
-            <a href="{% url 'mainapp:post_create' %}">Добавить статью</a>
-            {% if user_posts %}
+            {% if posts %}
                 <table>
                     <thead>
                     <tr>
@@ -16,17 +15,16 @@
                         <th scope="col" style="border: 2px solid black;">Действия</th>
                     </tr>
                     </thead>
-                    {% for update in user_posts %}
-                        {% if update.user == user %}
+                    {% for post in posts %}
+                        {% if post.user == user %}
                             <tbody>
                             <tr>
-                                <td style="border: 2px solid black;">{{ update.name }}</td>
-                                <td style="border: 2px solid black;">{{ update.user }}</td>
-                                <td style="border: 2px solid black;">{{ update.text | truncatewords:50 }} </td>
+                                <td style="border: 2px solid black;">{{ post.name }}</td>
+                                <td style="border: 2px solid black;">{{ post.user }}</td>
+                                <td style="border: 2px solid black;">{{ post.text | truncatewords:50 }} </td>
                                 <td style="border: 2px solid black;">
                                     <form action="#" method="post">
-                                        <a href="{% url 'mainapp:post_update' update.id %}">Изменить</a>
-                                        <a href="{% url 'mainapp:post_delete' update.id %}">Удалить</a>
+                                        <a href="{% url 'mainapp:add_post' post.id category%}">Добавить в категорию</a>
                                     </form>
                                 </td>
                             </tr>

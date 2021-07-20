@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from mainapp.views import PostListView, PostDetailView, PostUserView, PostCreateView, PostUpdateView, PostDeleteView, \
-    CategoryListView, PostsInCategoryDetailView, CategoryCreateView, CategoryDeleteView, CategoryUpdateView
+    CategoryListView, PostsInCategoryDetailView, CategoryCreateView, AddPostToCategoryView, AddPostToCategoryListView
 
 app_name = 'mainapp'
 
@@ -27,11 +27,13 @@ urlpatterns = [
     path('post/<int:pk>/', PostDetailView.as_view(), name='post'),
     path('posts/', PostUserView.as_view(), name='posts'),
     path('categories/', CategoryListView.as_view(), name='categories'),
-    path('category/<int:pk', PostsInCategoryDetailView.as_view(), name='category'),
-    path('category/<int:pk', CategoryCreateView.as_view(), name='category_create'),
-    path('category/<int:pk', CategoryUpdateView.as_view(), name='category_update'),
-    path('category/<int:pk', CategoryDeleteView.as_view(), name='category_delete'),
+    path('category/<int:pk>/', PostsInCategoryDetailView.as_view(), name='category'),
+    path('category_create/', CategoryCreateView.as_view(), name='category_create'),
+    # path('category/<int:pk', CategoryUpdateView.as_view(), name='category_update'),
+    # path('category/<int:pk', CategoryDeleteView.as_view(), name='category_delete'),
     path('create/', PostCreateView.as_view(), name='post_create'),
     path('update/<int:pk>/', PostUpdateView.as_view(), name='post_update'),
     path('delete/<int:pk>/', PostDeleteView.as_view(), name='post_delete'),
+    path('add_post_list/<int:pk>/', AddPostToCategoryListView.as_view(), name='add_post_list'),
+    path('add_post/<int:pk>/<int:cat_pk>/', AddPostToCategoryView.as_view(), name='add_post'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
