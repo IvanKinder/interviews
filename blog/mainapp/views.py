@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from mainapp.forms import PostForm, CategoryForm
@@ -97,7 +99,7 @@ class CategoryListView(ListView):
 
 class CategoryCreateView(CreateView):
     form_class = CategoryForm
-    model = Post
+    model = Category
     success_url = '/categories/'
     template_name = 'mainapp/category_create.html'
 
@@ -107,22 +109,30 @@ class CategoryCreateView(CreateView):
         return context
 
 
-# class CategoryUpdateView(UpdateView):
-#     form_class = PostForm
-#     model = Post
-#     success_url = '/posts/'
-#     template_name = 'mainapp/post_update.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Blog | Update'
-#         return context
-#
-#
-# class CategoryDeleteView(DeleteView):
-#     model = Post
-#     success_url = '/posts/'
-#     template_name = 'mainapp/post_delete.html'
+class CategoryUpdateView(UpdateView):
+    form_class = CategoryForm
+    model = Category
+    success_url = '/categories/'
+    template_name = 'mainapp/category_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Blog | Update'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    success_url = '/categories/'
+    template_name = 'mainapp/category_delete.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class PostsInCategoryDetailView(DetailView):

@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <h2>Редактироваие категории</h2>
+        <hr>
+        <form action="" method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Обновить">
+            <a href="{% url 'mainapp:categories' %}">Отмена</a>
+        </form>
+    </div>
+{% endblock %}

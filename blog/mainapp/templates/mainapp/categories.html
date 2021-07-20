@@ -25,6 +25,14 @@
                         <td style="border: 2px solid black;">
                             <form action="#" method="post">
                                 <a href="{% url 'mainapp:category' category.id %}">Статьи</a>
+                                {% if user.is_superuser %}
+                                    <a href="{% url 'mainapp:category_update' category.id%}">
+                                        Изменить категорию
+                                    </a>
+                                    <a href="{% url 'mainapp:category_delete' category.id%}">
+                                        Удалить категорию
+                                    </a>
+                                {% endif %}
                             </form>
                         </td>
                     </tr>

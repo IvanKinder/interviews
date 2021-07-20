@@ -18,7 +18,8 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from mainapp.views import PostListView, PostDetailView, PostUserView, PostCreateView, PostUpdateView, PostDeleteView, \
-    CategoryListView, PostsInCategoryDetailView, CategoryCreateView, AddPostToCategoryView, AddPostToCategoryListView
+    CategoryListView, PostsInCategoryDetailView, CategoryCreateView, AddPostToCategoryView, AddPostToCategoryListView, \
+    CategoryUpdateView, CategoryDeleteView
 
 app_name = 'mainapp'
 
@@ -29,8 +30,8 @@ urlpatterns = [
     path('categories/', CategoryListView.as_view(), name='categories'),
     path('category/<int:pk>/', PostsInCategoryDetailView.as_view(), name='category'),
     path('category_create/', CategoryCreateView.as_view(), name='category_create'),
-    # path('category/<int:pk', CategoryUpdateView.as_view(), name='category_update'),
-    # path('category/<int:pk', CategoryDeleteView.as_view(), name='category_delete'),
+    path('updatecategory/<int:pk>/', CategoryUpdateView.as_view(), name='category_update'),
+    path('deletecategory/<int:pk>/', CategoryDeleteView.as_view(), name='category_delete'),
     path('create/', PostCreateView.as_view(), name='post_create'),
     path('update/<int:pk>/', PostUpdateView.as_view(), name='post_update'),
     path('delete/<int:pk>/', PostDeleteView.as_view(), name='post_delete'),
