@@ -29,3 +29,9 @@ class CategoryForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     tags = forms.CharField()
+
+
+class ContactsForm(forms.Form):
+    name = forms.CharField()
+    email = forms.EmailField()
+    text = forms.Textarea()

@@ -16,6 +16,9 @@
             <li>
                 <a href="{% url 'mainapp:search' %}">Поиск по тегам</a>
             </li>
+            <li>
+                <a href="{% url 'mainapp:contacts' %}">Обратная связь</a>
+            </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a>

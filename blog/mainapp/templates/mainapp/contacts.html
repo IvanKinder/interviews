@@ -1,0 +1,18 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    {% if results %}
+        <div>
+            <h2>
+                Ваше сообщение отправлено
+            </h2>
+        </div>
+    {% else %}
+        <h1>Напишите нам</h1>
+        <form action="." method="get">
+            {{ form.as_p }}
+            <input type="submit" value="Отправить">
+        </form>
+        <br>
+    {% endif %}
+{% endblock %}

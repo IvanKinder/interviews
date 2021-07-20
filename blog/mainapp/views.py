@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from mainapp.forms import PostForm, CategoryForm, SearchForm
+from mainapp.forms import PostForm, CategoryForm, SearchForm, ContactsForm
 from mainapp.models import Post, Category, PostToCategory, Tag, PostToTag
 
 
@@ -220,4 +220,15 @@ def post_search(request):
                   'mainapp/search.html',
                   {'form': form,
                    'query': tags,
+                   'results': results})
+
+
+def contacts(request):
+    form = ContactsForm()
+    results = request.GET
+    print(results)  # имитация обратной связи
+
+    return render(request,
+                  'mainapp/contacts.html',
+                  {'form': form,
                    'results': results})
