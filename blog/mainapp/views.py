@@ -211,9 +211,11 @@ def post_search(request):
             for tag in tags:
                 if tag != '':
                     try:
-                        results.append(PostToTag.objects.filter(tag_id=Tag.objects.get(name=tag))[0])
-                    except Exception:
+                        for tag in Tag.objects.filter(name=tag):
+                            results.append(PostToTag.objects.filter(tag_id=tag)[0])
+                    except Exception as e:
                         pass
+
     return render(request,
                   'mainapp/search.html',
                   {'form': form,

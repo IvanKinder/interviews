@@ -10,6 +10,7 @@
     {% if results %}
         {% for result in results %}
             <a href="{% url 'mainapp:post' result.id %}">{{ result.post.name }}</a>
+            <br>
         {% endfor %}
     {% elif query %}
         Поиск не дал результатов
