@@ -1,0 +1,17 @@
+{% extends "mainapp/base.html" %}
+
+{% block content %}
+    <h1>Поиск статей по тегам</h1>
+    <form action="." method="get">
+        {{ form.as_p }}
+        <input type="submit" value="Поиск">
+    </form>
+    <br>
+    {% if results %}
+        {% for result in results %}
+            <a href="{% url 'mainapp:post' result.id %}">{{ result.post.name }}</a>
+        {% endfor %}
+    {% elif query %}
+        Поиск не дал результатов
+    {% endif %}
+{% endblock %}

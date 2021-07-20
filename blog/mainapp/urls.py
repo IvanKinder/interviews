@@ -19,7 +19,7 @@ from django.urls import path
 
 from mainapp.views import PostListView, PostDetailView, PostUserView, PostCreateView, PostUpdateView, PostDeleteView, \
     CategoryListView, PostsInCategoryDetailView, CategoryCreateView, AddPostToCategoryView, AddPostToCategoryListView, \
-    CategoryUpdateView, CategoryDeleteView
+    CategoryUpdateView, CategoryDeleteView, post_search
 
 app_name = 'mainapp'
 
@@ -37,4 +37,5 @@ urlpatterns = [
     path('delete/<int:pk>/', PostDeleteView.as_view(), name='post_delete'),
     path('add_post_list/<int:pk>/', AddPostToCategoryListView.as_view(), name='add_post_list'),
     path('add_post/<int:pk>/<int:cat_pk>/', AddPostToCategoryView.as_view(), name='add_post'),
+    path('search/', post_search, name='search'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

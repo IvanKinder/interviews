@@ -8,6 +8,13 @@
             <img src="/media/{{ post.picture }}" alt="post picture">
         {% endif %}
         <br>
+        <ul>
+            {% for tag in tags %}
+                <li>
+                    <a href="{% url 'mainapp:search' %}?tags={{ tag }}">#{{ tag }}</a>
+                </li>
+            {% endfor %}
+        </ul>
         <a href="{% url 'mainapp:home' %}">Домой</a>
     </div>
 {% endblock %}

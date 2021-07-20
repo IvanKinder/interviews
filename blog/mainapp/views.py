@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from mainapp.forms import PostForm, CategoryForm
-from mainapp.models import Post, Category, PostToCategory
+from mainapp.forms import PostForm, CategoryForm, SearchForm
+from mainapp.models import Post, Category, PostToCategory, Tag, PostToTag
 
 
 class PostListView(ListView):
@@ -28,6 +28,12 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Blog | Post'
+        context['tags'] = []
+        try:
+            for post_bind_tag in PostToTag.objects.filter(post_id=self.request.resolver_match[2]['pk']):
+                context['tags'].append(Tag.objects.filter(pk=post_bind_tag.id)[0])
+        except Exception as e:
+            pass
         return context
 
 
@@ -56,6 +62,8 @@ class PostCreateView(CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        tags = self.request.POST['tags'].split('#')
+        print(tags)
         try:
             post = Post.objects.create(user=self.request.user, name=self.request.POST['name'],
                                        text=self.request.POST['text'], picture=request._files['picture'])
@@ -63,6 +71,13 @@ class PostCreateView(CreateView):
             post = Post.objects.create(user=self.request.user, name=self.request.POST['name'],
                                        text=self.request.POST['text'])
         post.save()
+        for tag in tags:
+            if tag != '':
+                tag_obj = Tag.objects.create(name=tag)
+                tag_obj.save()
+                tag_bind_post = PostToTag.objects.create(post=post, tag=tag_obj)
+                tag_bind_post.save()
+
         return HttpResponseRedirect('/posts/')
 
 
@@ -183,3 +198,24 @@ class AddPostToCategoryView(ListView):
         except Exception:
             context['data'] = 'Статья уже в этой категории'
         return context
+
+
+def post_search(request):
+    form = SearchForm()
+    tags = None
+    results = []
+    if 'tags' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            tags = form.cleaned_data['tags'].split('#')
+            for tag in tags:
+                if tag != '':
+                    try:
+                        results.append(PostToTag.objects.filter(tag_id=Tag.objects.get(name=tag))[0])
+                    except Exception:
+                        pass
+    return render(request,
+                  'mainapp/search.html',
+                  {'form': form,
+                   'query': tags,
+                   'results': results})

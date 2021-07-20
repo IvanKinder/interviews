@@ -6,11 +6,21 @@
             <form action="" method="post">
                 {% csrf_token %}
                 {% for post in post_list %}
-                    <h2 style="justify-content: space-between; text-align: center">"{{ post.name }}"
-                        автор: {{ post.user }}</h2>
-                    <hr>
-                    <p style="word-wrap: break-word;">{{ post.text | truncatewords:20 }}
-                        <a href="{% url 'mainapp:post' post.id %}">Читать далее</a></p>
+                    <div>
+                        <div>
+                            <ul style="display: flex; justify-content: space-around; list-style-type: none; font-size: large; font-style: italic; font-weight: bold;">
+                                <li style="display: inline;">"{{ post.name }}";</li>
+                                <li style="display: inline;">автор: {{ post.user }};</li>
+                                <li style="display: inline;">дата создания: {{ post.created_at }}</li>
+                            </ul>
+                        </div>
+                        <hr>
+                        <div>
+                            <p style="word-wrap: break-word;">{{ post.text | truncatewords:70 }}
+                                <a href="{% url 'mainapp:post' post.id %}">Читать далее</a>
+                            </p>
+                        </div>
+                    </div>
                     <hr>
                     <hr>
                 {% endfor %}
@@ -25,9 +35,11 @@
                                              href="?page={{ page_obj.previous_page_number }}">Предыдущая</a></li>
                 {% endif %}
                 <li class="page-item"><span
-                        class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span></li>
+                        class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+                </li>
                 {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                    <li class="page-item"><a class="page-link"
+                                             href="?page={{ page_obj.next_page_number }}">Следующая</a>
                     </li>
                 {% endif %}
             </ul>

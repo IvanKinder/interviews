@@ -25,3 +25,7 @@ class CategoryForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
+
+
+class SearchForm(forms.Form):
+    tags = forms.CharField()

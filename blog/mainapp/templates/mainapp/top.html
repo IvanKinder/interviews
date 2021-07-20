@@ -1,6 +1,7 @@
-<nav class="top">
-    <div>
-        <ul style="display: flex; justify-content: space-evenly">
+<nav class="top" style="padding-bottom: 20px;">
+    <div style=" background-color: rgba(60,255,22,0.58)">
+        <hr>
+        <ul style="display: flex; justify-content: space-evenly; font-size: large; font-weight: bold;">
             <li>
                 <a href="{% url 'mainapp:home' %}">Главная</a>
             </li>
@@ -12,6 +13,9 @@
                     <a href="{% url 'mainapp:posts' %}">Мои статьи</a>
                 </li>
             {% endif %}
+            <li>
+                <a href="{% url 'mainapp:search' %}">Поиск по тегам</a>
+            </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a>

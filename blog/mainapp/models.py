@@ -26,6 +26,9 @@ class Tag(models.Model):
     """Модель тега"""
     name = models.CharField(max_length=32, verbose_name='Название тега')
 
+    def __str__(self):
+        return self.name
+
 
 class PostToCategory(models.Model):
     """Связь статьи и категории"""

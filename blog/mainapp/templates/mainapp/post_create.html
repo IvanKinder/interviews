@@ -7,6 +7,11 @@
         <form action="" method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
+            <label>
+                <input type="text" name="tags" placeholder="#tag1#tag2#tag3">
+            </label><label> Добавить теги</label>
+            <br>
+            <br>
             <input type="submit" value="Создать статью">
             <a href="{% url 'mainapp:home' %}">Отмена</a>
         </form>
