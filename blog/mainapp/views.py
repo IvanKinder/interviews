@@ -9,6 +9,7 @@ from mainapp.models import Post, Category, PostToCategory, Tag, PostToTag
 
 
 class PostListView(ListView):
+    """Представление для просмотра всех статей"""
     model = Post
     template_name = 'mainapp/index.html'
     ordering = ['-created_at']
@@ -21,11 +22,13 @@ class PostListView(ListView):
 
 
 class PostDetailView(DetailView):
+    """Представление для просмотра конкретной статьи"""
     model = Post
     context_object_name = 'post'
     template_name = 'mainapp/post.html'
 
     def get_context_data(self, **kwargs):
+        """Добавление в context data тегов"""
         context = super().get_context_data(**kwargs)
         context['title'] = f'Blog | Post'
         context['tags'] = []
@@ -38,6 +41,7 @@ class PostDetailView(DetailView):
 
 
 class PostUserView(ListView):
+    """Представление для отображения и редактирования статей текущего пользователя"""
     model = Post
     context_object_name = 'user_posts'
     ordering = ['-created_at']
@@ -51,6 +55,7 @@ class PostUserView(ListView):
 
 
 class PostCreateView(CreateView):
+    """Представление для создания статьи"""
     form_class = PostForm
     model = Post
     success_url = '/posts/'
@@ -80,6 +85,10 @@ class PostCreateView(CreateView):
 
         return HttpResponseRedirect('/posts/')
 
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 
 class PostUpdateView(UpdateView):
     form_class = PostForm
@@ -92,11 +101,19 @@ class PostUpdateView(UpdateView):
         context['title'] = 'Blog | Update'
         return context
 
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 
 class PostDeleteView(DeleteView):
     model = Post
     success_url = '/posts/'
     template_name = 'mainapp/post_delete.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class CategoryListView(ListView):
@@ -122,6 +139,10 @@ class CategoryCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Blog | Create New Category'
         return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class CategoryUpdateView(UpdateView):
