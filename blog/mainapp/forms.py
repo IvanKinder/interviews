@@ -4,6 +4,7 @@ from mainapp.models import Post, Category
 
 
 class PostForm(forms.ModelForm):
+    """Форма создания и изменения статьи"""
     class Meta:
         model = Post
         fields = ('name', 'text', 'picture',)
@@ -16,6 +17,7 @@ class PostForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
+    """Форма создания и изменения категории"""
     class Meta:
         model = Category
         fields = ('name', 'description',)
@@ -28,10 +30,12 @@ class CategoryForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
+    """Форма поиска по тегам"""
     tags = forms.CharField()
 
 
 class ContactsForm(forms.Form):
+    """Форма обратной связи"""
     name = forms.CharField()
     email = forms.EmailField()
     text = forms.Textarea()

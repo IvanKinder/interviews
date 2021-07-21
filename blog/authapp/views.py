@@ -9,6 +9,7 @@ from authapp.forms import UserLoginForm, UserRegisterForm
 
 @csrf_exempt
 def login(request):
+    """Представление для входа в блог"""
     login_form = UserLoginForm(data=request.POST)
     next_url = request.GET.get('next', '')
     if request.method == 'POST' and login_form.is_valid():
@@ -26,11 +27,13 @@ def login(request):
 
 
 def logout(request):
+    """Loguot"""
     auth.logout(request)
     return HttpResponseRedirect(reverse('mainapp:home'))
 
 
 def register(request):
+    """Регистрация на сайте"""
     if request.method == 'POST':
         register_form = UserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():

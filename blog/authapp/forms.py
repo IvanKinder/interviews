@@ -2,7 +2,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
 
-class UserLoginForm(AuthenticationForm):  # форма авторизации
+class UserLoginForm(AuthenticationForm):
+    """Форма авторизации"""
     class Meta:
         model = User
         fields = ('username', 'password')
@@ -13,7 +14,8 @@ class UserLoginForm(AuthenticationForm):  # форма авторизации
             field.widget.attrs['class'] = 'form-control'
 
 
-class UserRegisterForm(UserCreationForm):  # регистрация
+class UserRegisterForm(UserCreationForm):
+    """Форма регистрации"""
     class Meta:
         model = User
         fields = ('username', 'first_name', 'password1', 'password2', 'email')

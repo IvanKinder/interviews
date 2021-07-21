@@ -67,6 +67,7 @@ class PostCreateView(CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """Добавлено автоматическое заполнение поля user, добавление тегов/тега, если были указаны"""
         tags = self.request.POST['tags'].split('#')
         print(tags)
         try:
@@ -91,6 +92,7 @@ class PostCreateView(CreateView):
 
 
 class PostUpdateView(UpdateView):
+    """Представление для изменения статьи"""
     form_class = PostForm
     model = Post
     success_url = '/posts/'
@@ -107,6 +109,7 @@ class PostUpdateView(UpdateView):
 
 
 class PostDeleteView(DeleteView):
+    """Представление для удаления статьи"""
     model = Post
     success_url = '/posts/'
     template_name = 'mainapp/post_delete.html'
@@ -117,6 +120,7 @@ class PostDeleteView(DeleteView):
 
 
 class CategoryListView(ListView):
+    """Представление для просмотра категорий"""
     model = Category
     template_name = 'mainapp/categories.html'
     context_object_name = 'categories'
@@ -130,6 +134,7 @@ class CategoryListView(ListView):
 
 
 class CategoryCreateView(CreateView):
+    """Создание категорий"""
     form_class = CategoryForm
     model = Category
     success_url = '/categories/'
@@ -146,6 +151,7 @@ class CategoryCreateView(CreateView):
 
 
 class CategoryUpdateView(UpdateView):
+    """Изменение категорий"""
     form_class = CategoryForm
     model = Category
     success_url = '/categories/'
@@ -162,6 +168,7 @@ class CategoryUpdateView(UpdateView):
 
 
 class CategoryDeleteView(DeleteView):
+    """Удаление категорий"""
     model = Category
     success_url = '/categories/'
     template_name = 'mainapp/category_delete.html'
@@ -172,6 +179,7 @@ class CategoryDeleteView(DeleteView):
 
 
 class PostsInCategoryDetailView(DetailView):
+    """Просмотр статей в конкретной категории"""
     model = Category
     context_object_name = 'category'
     template_name = 'mainapp/category.html'
@@ -186,6 +194,7 @@ class PostsInCategoryDetailView(DetailView):
 
 
 class AddPostToCategoryListView(ListView):
+    """Просмотр статей для добавления в выбранную категорию"""
     model = Post
     success_url = '/categories/'
     context_object_name = 'posts'
@@ -201,6 +210,7 @@ class AddPostToCategoryListView(ListView):
 
 
 class AddPostToCategoryView(ListView):
+    """Добавление выбранной статьи в выбранную категорию"""
     model = PostToCategory
     success_url = '/categories/'
     context_object_name = 'posts_to_category'
@@ -222,6 +232,7 @@ class AddPostToCategoryView(ListView):
 
 
 def post_search(request):
+    """Поиск по тегам"""
     form = SearchForm()
     tags = None
     results = []
@@ -245,6 +256,7 @@ def post_search(request):
 
 
 def contacts(request):
+    """Представление для обратной связи"""
     form = ContactsForm()
     results = request.GET
     print(results)  # имитация обратной связи
